@@ -1,0 +1,57 @@
+DAYS = [
+    ('MON', 'Monday'),
+    ('TUE', 'Tuesday'),
+    ('WED', 'Wednesday'),
+    ('THU', 'Thursday'),
+    ('FRI', 'Friday'),
+    ('SAT', 'Saturday'),
+    ('SUN', 'Sunday'),
+]
+
+NIGERIAN_LOCATIONS = [
+    'abia',
+    'adamawa',
+    'akwa-ibom',
+    'anambra',
+    'bauchi',
+    'bayelsa',
+    'benue',
+    'borno',
+    'cross-river',
+    'delta',
+    'ebonyi',
+    'edo',
+    'ekiti',
+    'enugu',
+    'gombe',
+    'imo',
+    'jigawa',
+    'kaduna',
+    'kano',
+    'katsina',
+    'kebbi',
+    'kogi',
+    'kwara',
+    'lagos',
+    'nasarawa',
+    'niger',
+    'ogun',
+    'ondo',
+    'osun',
+    'oyo',
+    'plateau',
+    'rivers',
+    'sokoto',
+    'taraba',
+    'yobe',
+    'zamfara',
+    'abuja'
+]
+
+LEVEL = [
+    '100 level',
+    '200 level',
+    '300 level',
+    '400 level',
+    '500 level'
+]
