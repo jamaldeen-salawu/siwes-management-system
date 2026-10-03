@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>{{ enterprise.name }}</h2>  
+</div>
+<div>
+    <p>NAME: {{ enterprise.name }}</p>
+    <p>STATE: {{ enterprise.state.upper }} STATE</p>
+    <p>ADDRESS: {{ enterprise.address }}</p>
+</div>
+
+{% endblock content %}

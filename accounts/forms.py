@@ -25,7 +25,7 @@ class StudentSignupForm(forms.ModelForm):
             'department',
             'matric_no',
             'level',
-            'phone_no'
+            'phone_no',
         ]
 
 class SupervisorSignupForm(forms.ModelForm):

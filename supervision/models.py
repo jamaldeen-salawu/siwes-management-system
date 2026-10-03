@@ -7,7 +7,7 @@ class Department(models.Model):
     code = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.code_name
+        return self.code
 
 class Supervisor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

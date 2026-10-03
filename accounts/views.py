@@ -40,6 +40,7 @@ def StudentSignup(request):
             with transaction.atomic():
                 user.save()
                 student.save()
+            return redirect('accounts:login')
     context = {
         'user_form': user_form,
         'student_form': student_form

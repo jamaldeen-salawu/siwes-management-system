@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>My Profile</h2>  
+</div>
+<div>
+    <h1>{{ student.user.first_name }} {{ student.user.last_name }}</h1>
+    <p>EMAIL: {{ student.user.email }}</p>
+    <p>DEPARTMENT: {{ student.department }}</p>
+    <p>LEVEL: {{ student.level }}</p>
+    <p>MATRIC NO: {{ student.matric_no }}</p>
+    <p>PHONE NUMBER: {{ student.phone_no }}</p>
+</div>
+
+{% endblock content %}
