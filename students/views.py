@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import (
     UserUpdateForm,
     StudentUpdateForm,
-    PlacementCreationForm
+    PlacementForm
 )
 from django.db import transaction
 # Create your views here.
@@ -44,8 +44,8 @@ class StudentPlacementView(generic.DetailView):
         return self.request.user.student.placement
 
 class StudentPlacementCreateView(generic.CreateView):
-    form_class = PlacementCreationForm
-    template_name = 'students/placement_create.html'
+    form_class = PlacementForm
+    template_name = 'students/placement_form.html'
     def get_success_url(self):
         return reverse('students:placement')
 
@@ -54,6 +54,16 @@ class StudentPlacementCreateView(generic.CreateView):
         placement.student = self.request.user.student
         placement.save()
         return super().form_valid(form)
+
+class StudentUpdatePlacementView(generic.UpdateView):
+    template_name = 'students/placement_form.html'
+    form_class = PlacementForm
+
+    def get_object(self):
+        return self.request.user.student.placement
+
+    def get_success_url(self):
+        return reverse('students:placement')
 
 class StudentAssignedSupervisorView(generic.DetailView):
     model = Student

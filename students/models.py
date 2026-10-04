@@ -30,12 +30,12 @@ class Placement(models.Model):
     session = models.CharField(max_length=9)
 
 
-    on_site_days = models.JSONField(default=list)
-    resumption_time = models.TimeField()
-    closing_time = models.TimeField()
+    on_site_days = models.JSONField(default=list, null=True, blank=True)
+    resumption_time = models.TimeField(null=True, blank=True)
+    closing_time = models.TimeField(null=True, blank=True)
 
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
 
     visit_status = models.CharField(max_length=20, choices=Status.choices, default=Status.NOT_VISITED)
     planned_date = models.DateField(null=True, blank=True)

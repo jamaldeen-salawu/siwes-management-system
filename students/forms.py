@@ -23,7 +23,7 @@ class StudentUpdateForm(forms.ModelForm):
             'level'
         ]
 
-class PlacementCreationForm(forms.ModelForm):
+class PlacementForm(forms.ModelForm):
     on_site_days = forms.MultipleChoiceField(choices=DAYS, widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Placement

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.views import generic
 from django.db import transaction
 from .forms import (
@@ -10,6 +10,7 @@ from .forms import (
 )
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LoginView 
 # Create your views here.
 User = get_user_model()
 
@@ -61,6 +62,7 @@ def SupervisorSignup(request):
             with transaction.atomic():
                 user.save()
                 supervisor.save()
+            return redirect('accounts:login')
     context = {
         'user_form': user_form,
         'supervisor_form': supervisor_form
@@ -81,8 +83,18 @@ def DepartmentSignup(request):
             with transaction.atomic():
                 user.save()
                 staff.save()
+            return redirect('accounts:login')
     context = {
         'user_form': user_form,
         'staff_form': staff_form
     }
     return render(request, 'accounts/staff-signup.html', context)
+
+
+class CustomLoginView(LoginView):
+    def get_success_url(self):
+        user = self.request.user
+        if user.role == 'STUDENT':
+            return reverse('students:placement')
+        if user.role == 'SUPERVISOR':
+            return reverse('supervision:students')
