@@ -95,6 +95,6 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         user = self.request.user
         if user.role == 'STUDENT':
-            return reverse('students:placement')
+            return reverse('students:profile')
         if user.role == 'SUPERVISOR':
             return reverse('supervision:students')

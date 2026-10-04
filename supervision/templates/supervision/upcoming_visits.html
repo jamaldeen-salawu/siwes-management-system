@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <ul>
+        {% for placement in placements %} 
+        <div>
+            <li><a href="{% url 'supervision:student-detail' placement.id %}">{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</a></li>
+            <p>{{ placement.planned_date }}</p>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

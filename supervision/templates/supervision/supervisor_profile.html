@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>My Profile</h2>  
+</div>
+<div>
+    <h3>NAME: {{ supervisor.user.first_name }} {{ supervisor.user.last_name }}</h3>
+    <p>EMAIL: {{ supervisor.user.email }}</p>
+    <p>DEPARTMENT: {{ supervisor.department }}</p>
+    <p>PHONE NUMBER: {{ supervisor.phone_no }}</p>
+</div>
+
+{% endblock content %}
