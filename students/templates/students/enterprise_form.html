@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Enterprise</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Save Enterprise</button>
+</form>
+
+<div>
+    <a href="{% url 'students:profile' %}">
+        Cancel
+    </a>
+</div>
+
+{% endblock content %}
+

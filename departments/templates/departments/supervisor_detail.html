@@ -1,0 +1,61 @@
+```django
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    <h1>Supervisor Detail</h1>
+
+    <a href="{% url 'departments:supervisor-update' supervisor.pk %}">
+        Update Supervisor
+    </a>
+</div>
+
+
+<!-- Supervisor Profile -->
+<div>
+    <h2>Profile</h2>
+
+    <h3>
+        {{ supervisor.user.first_name }}
+        {{ supervisor.user.last_name }}
+    </h3>
+
+    <p>EMAIL: {{ supervisor.user.email }}</p>
+    <p>PHONE NUMBER: {{ supervisor.phone_no }}</p>
+    <p>DEPARTMENT: {{ supervisor.department }}</p>
+</div>
+
+
+<!-- Assigned Students -->
+<div>
+    <h2>Assigned Students</h2>
+
+    <p>
+        STUDENTS ASSIGNED:
+        {{ supervisor.student_count }}
+    </p>
+
+    {% if students %}
+        {% for student in students %}
+            <div>
+                <h3>
+                    {{ student.user.first_name }}
+                    {{ student.user.last_name }}
+                </h3>
+
+                <p>MATRIC NO: {{ student.matric_no }}</p>
+                <p>PHONE NUMBER: {{ student.phone_no }}</p>
+
+                <a href="{% url 'departments:student-detail' student.pk %}">
+                    View Student
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No students assigned.</p>
+    {% endif %}
+</div>
+
+{% endblock content %}
+```

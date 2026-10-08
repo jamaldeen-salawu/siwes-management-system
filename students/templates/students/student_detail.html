@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>My Profile</h2>  
+</div>
+<div>
+    <h1>{{ student.user.first_name }} {{ student.user.last_name }}</h1>
+    <p>EMAIL: {{ student.user.email }}</p>
+    <p>DEPARTMENT: {{ student.department }}</p>
+    <p>LEVEL: {{ student.level }}</p>
+    <p>MATRIC NO: {{ student.matric_no }}</p>
+    <p>PHONE NUMBER: {{ student.phone_no }}</p>
+</div>
+<a href="{% url 'students:supervisor' %}">View Supervisor</a>
+
+<a href="{% url 'students:placement-update' %}">Update Placement</a>
+<div>
+    <h2>{{ placement.student.first_name }} {{ placement.student.last_name }} Placement</h2>  
+</div>
+<div>
+    <h1>Enterprise: {{ placement.enterprise.name }}</h1>
+    <p>START DATE: {{ placement.start_date }}</p>
+    <p>END DATE: {{ placement.end_date }}</p>
+    <p>STATE: {{ placement.enterprise.state }}</p>
+    <p>ADDRESS: {{ placement.enterprise.address }}</p>
+</div>
+
+{% endblock content %}

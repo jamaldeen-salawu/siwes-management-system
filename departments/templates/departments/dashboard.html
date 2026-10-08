@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>Total Students: {{ students }}</h2>
+</div>
+<div>
+    <h2>Total Supervisors: {{ supervisors }}</h2>
+</div>
+<div>
+    <h2>Total Student Placement: {{ student_placement }}</h2>
+</div>
+<div>
+    <h2>Upcoming Visits</h2>
+    <ul>
+        {% for visit in upcoming_visits %}
+        <li></li>{{ visit.student.user.first_name }} {{ visit.student.user.last_name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <h2>Studensts Visited: {{ visited }}</h2>
+</div>
+<div>Students Not Visited: {{ not_visited }}</div>
+{% endblock content %}

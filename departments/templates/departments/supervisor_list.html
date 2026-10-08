@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if supervisors %}
+<div>
+    {% for supervisor in supervisors %} 
+    <div>
+        <a href="{% url 'departments:supervisor-detail' supervisor.id %}">{{ supervisor.user.first_name }} {{ supervisor.user.last_name }}</a>
+        <p>Assigned Students: {{ supervisor.student_count }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock content %}

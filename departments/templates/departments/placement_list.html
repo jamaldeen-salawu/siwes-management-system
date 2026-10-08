@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Placement Management</h1>
+
+<h2>Students With Placement</h2>
+
+{% if student_list %}
+
+    {% for student in student_list %}
+
+        <div>
+            <h3>
+                {{ student.user.first_name }}
+                {{ student.user.last_name }}
+            </h3>
+
+            <p>MATRIC NO: {{ student.matric_no }}</p>
+            <p>ENTERPRISE: {{ student.placement.enterprise.name }}</p>
+            <p>SESSION: {{ student.placement.session }}</p>
+
+            <a href="{% url 'departments:student-detail' student.pk %}">
+                View Student
+            </a>
+
+            <a href="{% url 'departments:placement-update' student.pk %}">
+                Update Placement
+            </a>
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No students currently have placements.</p>
+
+{% endif %}
+
+
+<h2>Students Without Placement</h2>
+
+{% if no_placement %}
+
+    {% for student in no_placement %}
+
+        <div>
+            <h3>
+                {{ student.user.first_name }}
+                {{ student.user.last_name }}
+            </h3>
+
+            <p>MATRIC NO: {{ student.matric_no }}</p>
+
+            <a href="{% url 'departments:student-detail' student.pk %}">
+                View Student
+            </a>
+
+            <a href="{% url 'departments:placement-create' student.pk %}">
+                Create Placement
+            </a>
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>All students have placements.</p>
+
+{% endif %}
+
+{% endblock content %}
+

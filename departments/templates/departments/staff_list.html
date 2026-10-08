@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Department Staff</h1>
+
+<a href="{% url 'departments:staff-create' %}">
+    Create Staff
+</a>
+
+{% if departmentstaff_list %}
+
+    {% for staff in departmentstaff_list %}
+
+        <div>
+            <h3>
+                {{ staff.user.first_name }}
+                {{ staff.user.last_name }}
+            </h3>
+
+            <p>Email: {{ staff.user.email }}</p>
+            <p>Department: {{ staff.department }}</p>
+            <p>Title: {{ staff.title }}</p>
+
+            <a href="{% url 'departments:staff-detail' staff.pk %}">
+                View Details
+            </a>
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No department staff found.</p>
+
+{% endif %}
+
+{% endblock content %}

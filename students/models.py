@@ -1,7 +1,9 @@
 from django.db import models
 from django.conf import settings
-from supervision.models import Department, Supervisor
+from supervision.models import Supervisor
+from departments.models import Department
 from .constants import NIGERIAN_LOCATIONS, LEVEL
+from enterprises.models import Enterprise
 # Create your models here.
 
 
@@ -18,30 +20,27 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
 
-STATE_CHOICES = [(location, location.upper()) for location in NIGERIAN_LOCATIONS]
-
-class Enterprise(models.Model):
-    name = models.CharField(max_length=20)
-    location = models.TextField()
-    state = models.CharField(max_length=11, choices=STATE_CHOICES)
-
-    def __str__(self):
-        return self.name
-
 
 class Placement(models.Model):
+    class Status(models.TextChoices):
+        VISITED = "VISITED", "Visited"
+        NOT_VISITED = "NOT_VISITED", "Not visited"
     student = models.OneToOneField(Student, on_delete=models.CASCADE)
     enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, related_name='placements')
 
     session = models.CharField(max_length=9)
 
 
-    on_site_days = models.JSONField(default=list)
-    on_site_start = models.TimeField()
-    on_site_end = models.TimeField()
+    on_site_days = models.JSONField(default=list, null=True, blank=True)
+    resumption_time = models.TimeField(null=True, blank=True)
+    closing_time = models.TimeField(null=True, blank=True)
 
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    visit_status = models.CharField(max_length=20, choices=Status.choices, default=Status.NOT_VISITED)
+    planned_date = models.DateField(null=True, blank=True)
+    visit_date = models.DateField(null=True, blank=True)
     
     def __str__(self):
         return self.enterprise.name

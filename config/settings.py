@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'students',
     'accounts',
     'supervision',
+    'enterprises',
+    'departments',
 ]
 
 MIDDLEWARE = [
@@ -132,5 +134,4 @@ MAILERS = {
 AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = 'accounts:login'
-LOGIN_REDIRECT_URL = None
 LOGOUT_REDIRECT_URL = 'accounts:login'

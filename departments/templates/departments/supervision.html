@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Supervision</h1>
+
+<h2>Upcoming Visits</h2>
+
+{% if not_visited %}
+
+    {% for placement in not_visited %}
+
+        <div>
+            <a href="{% url 'departments:student-detail' placement.student.pk %}">
+                {{ placement.student.user.get_full_name }}
+            </a>
+
+            <p>
+                Planned Visit:
+                {{ placement.planned_date }}
+            </p>
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No upcoming visits.</p>
+
+{% endif %}
+
+
+<h2>Completed Visits</h2>
+
+{% if visited %}
+
+    {% for placement in visited %}
+
+        <div>
+            <a href="{% url 'departments:student-detail' placement.student.pk %}">
+                {{ placement.student.user.get_full_name }}
+            </a>
+
+            <p>
+                Visit Date:
+                {{ placement.visit_date }}
+            </p>
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No completed visits.</p>
+
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>ENTERPRISE: {{ enterprise.name }}</h2>
+{% if placements %}
+<ul>
+{% for placement in placements %}
+<li>{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<h2>No students at this enterprise</h2>
+{% endif %}
+{% endblock content %}

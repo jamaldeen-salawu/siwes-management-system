@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>Assigned Supervisor</h2>  
+</div>
+<div>
+    <h1>{{ student.supervisor.user.first_name }} {{ student.supervisor.user.last_name }}</h1>
+    <p>Phone Number: {{ student.supervisor.phone_no }}</p>
+</div>
+
+{% endblock content %}

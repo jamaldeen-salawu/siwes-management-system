@@ -1,10 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<h2>Staff Signup</h2>
+
 <form method="post">
     {% csrf_token %}
+
     {{ user_form.as_p }}
     {{ staff_form.as_p }}
-    <button type="submit">submit</button>
+
+    <button type="submit">
+        Sign Up
+    </button>
 </form>
+
+
+{% if show_department_form %}
+
+<h2>Create Department</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ department_form.as_p }}
+        <button type="submit" name="create_department">
+            Create Department
+        </button>
+    </form>
+
+{% endif %}
+
 {% endblock content %}

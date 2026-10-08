@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h1>Student Detail</h1>  
+</div>
+<button type="button"><a href="{% url 'supervision:update-supervision-status' student.placement.id %}">Update Suprvision status</a></button>
+<div>
+    <h2>Profile</h2>
+    <h3>{{ student.user.first_name }} {{ student.user.last_name }}</h3>
+    <p>MATRIC NO: {{ student.matric_no }}</p>
+    <p>PHONE NUMBER: {{ student.phone_no }}</p>
+    <p>EMAIL: {{ student.user.email }}</p>
+    <p>DEPARTMENT: {{ student.department }}</p>
+    <p>LEVEL: {{ student.level }}</p>
+</div>
+<div>
+    <h2>Placement</h2>
+    <h3>Enterprise: {{ student.placement.enterprise.name }}</h3>
+    <p>START DATE: {{ student.placement.start_date }}</p>
+    <p>END DATE: {{ student.placement.end_date }}</p>
+    <p>STATE: {{ student.placement.enterprise.state }}</p>
+    <p>ADDRESS: {{ student.placement.enterprise.address }}</p>
+    <p>SESSION: {{ student.placement.session }}</p>
+</div>
+<div>
+    <h2>Supervision</h2>
+     <div>
+        <p>Opening Hours</p>
+        <p>{{ student.placement.resumption_time }} - {{ student.placement.closing_time }}</p>
+    </div>
+    {% for day in student.placement.on_site_days %}
+    <p>- {{ day }}</p>
+    {% endfor %}
+    {% if student.placement.visit_status == "NOT_VISITED" %}
+    <span class="badge badge-warning">VISIT STATUS: Pending Visit</span>
+    {% elif student.placement.visit_status == "VISITED" %}
+    <span class="badge badge-success">VISIT STATUS: Completed</span>
+    {% endif %}
+    <p>PHONE NUMBER: {{ student.phone_no }}</p>
+    {% if student.placement.planned_date or student.placement.visit_date %}
+    <p>PLANNED DATE: {{ student.placement.planned_date }}</p>
+    <p>ACTUAL VISIT DATE: {{ student.placement.visit_date }}</p>
+    {% endif %}
+</div>
+
+{% endblock content %}

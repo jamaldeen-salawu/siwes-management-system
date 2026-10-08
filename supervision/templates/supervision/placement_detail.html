@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if placement %}
+<div>
+    <h2>Supervision Visit</h2>  
+</div>
+<div>
+    <h3>{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</h3>
+    <p>Enterprise: {{ placement.enterprise.name }}</p>
+    <div>
+        <p>Opening Hours</p>
+        <p>{{ placement.resumption_time }} - {{ placement.closing_time }}</p>
+    </div>
+    {% for day in placement.on_site_days %}
+    <p>- {{ day }}</p>
+    {% endfor %}
+    {% if placement.visit_status == "NOT_VISITED" %}
+    <span class="badge badge-warning">VISIT STATUS: Pending Visit</span>
+    {% elif placement.visit_status == "VISITED" %}
+    <span class="badge badge-success">VISIT STATUS: Completed</span>
+    {% endif %}
+    <p>PHONE NUMBER: {{ placement.student.phone_no }}</p>
+    {% if placement.planned_date or placement.visit_date %}
+    <p>PLANNED DATE: {{ placement.planned_date }}</p>
+    <p>ACTUAL VISIT DATE: {{ placement.visit_date }}</p>
+    {% endif %}
+</div>
+{% else %}
+<li>{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}has no placement. Contact: {{ placement.student.phone_no }}</li>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Update Staff</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <h2>Account Information</h2>
+    {{ user_form.as_p }}
+
+    <h2>Staff Information</h2>
+    {{ staff_form.as_p }}
+
+    <button type="submit">
+        Update Staff
+    </button>
+</form>
+
+<a href="{% url 'departments:staff-detail' departmentstaff.pk %}">
+    Cancel
+</a>
+
+{% endblock content %}
+
