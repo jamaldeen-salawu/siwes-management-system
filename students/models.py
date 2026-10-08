@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
-from supervision.models import Department, Supervisor
+from supervision.models import Supervisor
+from departments.models import Department
 from .constants import NIGERIAN_LOCATIONS, LEVEL
 from enterprises.models import Enterprise
 # Create your models here.

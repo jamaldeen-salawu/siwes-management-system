@@ -2,11 +2,27 @@
 
 {% block content %}
 <div>
+    <div>
+        <h2>Upcoming Visits</h2>
+    </div>
     <ul>
         {% for placement in placements %} 
         <div>
             <li><a href="{% url 'supervision:student-detail' placement.id %}">{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</a></li>
             <p>{{ placement.planned_date }}</p>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <div>
+        <h2>Students Visited</h2>
+    </div>
+    <ul>
+        {% for placement in visited %} 
+        <div>
+            <li><a href="{% url 'supervision:student-detail' placement.id %}">{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</a></li>
+            <p>{{ placement.visit_date }}</p>
         </div>
         {% endfor %}
     </ul>

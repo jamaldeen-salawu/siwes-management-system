@@ -1,6 +1,7 @@
 from django.shortcuts import render, reverse, redirect
 from django.views import generic
 from students.models import Student, Placement
+from enterprises.models import Enterprise
 from .mixins import SupervisorAuthorizationMixin
 from .forms import UpdateSupervisionForm, SupervisorUpdateForm, UserUpdateForm
 from .models import Supervisor
@@ -50,6 +51,14 @@ class UpcomingVisitView(generic.ListView):
         queryset = queryset.filter(visit_status=Placement.Status.NOT_VISITED).order_by("planned_date")
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = Placement.objects.filter(
+            student__supervisor=self.request.user.supervisor
+            ).filter(visit_status=Placement.Status.VISITED).order_by('visit_date')
+        context['visited'] = queryset
+        return context
+
 class PlacementDetailView(generic.DetailView):
     model = Placement
     template_name = 'supervision/placement_detail.html'
@@ -83,3 +92,30 @@ def SupervisorUpdateProfileView(request):
         'supervisor_form': supervisor_form
     }
     return render(request, 'supervision/supervisor_update.html', context)
+
+class SupervisorEnterpriseListView(generic.ListView):
+    model = Enterprise
+    context_object_name = "enterprises"
+    template_name = 'supervision/enterprise_list.html'
+
+    def get_queryset(self):
+        return Enterprise.objects.filter(
+            placements__student__supervisor=self.request.user.supervisor
+        ).distinct()
+
+class SupervisorEnterpriseDetailView(generic.DetailView):
+    model = Enterprise
+    template_name = 'supervision/enterprise_detail.html'
+
+    def get_queryset(self):
+        return Enterprise.objects.filter(
+            placements__student__supervisor=self.request.user.supervisor
+        ).distinct()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        placements = Placement.objects.filter(
+            enterprise=self.object
+        ).filter(student__supervisor=self.request.user.supervisor)
+        context['placements'] = placements
+        return context

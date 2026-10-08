@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Enterprises</h2>
+{% if enterprises %}
+<div>
+    <ul>
+        {% for enterprise in enterprises %} 
+        <div>
+            <li><a href="{% url 'supervision:enterprise-detail' enterprise.id %}">{{ enterprise.name }}</a></li>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock content %}

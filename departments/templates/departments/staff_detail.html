@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Staff Detail</h1>
+
+<h2>
+    {{ departmentstaff.user.first_name }}
+    {{ departmentstaff.user.last_name }}
+</h2>
+
+<p>Email: {{ departmentstaff.user.email }}</p>
+<p>Department: {{ departmentstaff.department }}</p>
+<p>Title: {{ departmentstaff.title }}</p>
+
+<a href="{% url 'departments:staff-update' departmentstaff.pk %}">
+    Update Staff
+</a>
+
+<a href="{% url 'departments:staff-list' %}">
+    Back to Staff
+</a>
+
+{% endblock content %}

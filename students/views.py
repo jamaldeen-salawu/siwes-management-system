@@ -9,6 +9,8 @@ from .forms import (
     PlacementForm
 )
 from django.db import transaction
+from enterprises.models import Enterprise
+from enterprises.forms import EnterpriseForm
 # Create your views here.
 class StudentProfileView(LoginRequiredMixin, generic.DetailView):
     model = Student
@@ -37,11 +39,6 @@ def StudentUpdateView(request):
     }
     return render(request, 'students/student_update.html', context)
 
-class StudentPlacementView(generic.DetailView):
-    template_name = 'students/placement_detail.html'
-    model = Placement
-    def get_object(self):
-        return self.request.user.student.placement
 
 class StudentPlacementCreateView(generic.CreateView):
     form_class = PlacementForm
@@ -54,6 +51,11 @@ class StudentPlacementCreateView(generic.CreateView):
         placement.student = self.request.user.student
         placement.save()
         return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['student'] = self.request.user.student
+        return kwargs
 
 class StudentUpdatePlacementView(generic.UpdateView):
     template_name = 'students/placement_form.html'
@@ -78,3 +80,35 @@ class StudentSupervisionVisitView(generic.DetailView):
 
     def get_object(self):
         return self.request.user.student
+
+#-------------------------ENTERPRISE---------------------------
+
+
+class StudentEnterpriseCreateView(generic.CreateView):
+    form_class = EnterpriseForm
+    template_name = 'students/enterprise_form.html'
+
+    def get_success_url(self):
+        return reverse('students:enterprise-detail', args=(self.object.id,))
+
+    def form_valid(self, form):
+        form.instance.department = self.request.user.student.department
+        return super().form_valid(form)
+ 
+class StudentEnterpriseUpdateView(generic.UpdateView):
+    form_class = EnterpriseForm
+    template_name = 'students/enterprise_form.html'
+
+    def get_success_url(self):
+        return reverse('students:enterprise-detail', args=(self.object.id,))
+    
+    def get_queryset(self):
+        return Enterprise.objects.filter(department=self.request.user.student.department)
+
+
+class StudentEnterpriseDetailView(generic.DetailView):
+    model = Enterprise
+    template_name = 'students/enterprise_detail.html'
+
+    def get_queryset(self):
+        return Enterprise.objects.filter(department=self.request.user.student.department)

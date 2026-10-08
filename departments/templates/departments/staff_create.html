@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Create Department Staff</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <h2>Account Information</h2>
+    {{ user_form.as_p }}
+
+    <h2>Staff Information</h2>
+    {{ staff_form.as_p }}
+
+    <button type="submit">
+        Create Staff
+    </button>
+</form>
+
+<a href="{% url 'departments:staff-list' %}">
+    Cancel
+</a>
+
+{% endblock content %}
+

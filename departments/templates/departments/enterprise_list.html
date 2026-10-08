@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Enterprises</h1>
+
+<div>
+    <a href="{% url 'departments:enterprise-create' %}">
+        Create Enterprise
+    </a>
+</div>
+
+<hr>
+
+{% if enterprises %}
+
+    {% for enterprise in enterprises %}
+
+        <div>
+            <h2>{{ enterprise.name }}</h2>
+
+            <p>Branch: {{ enterprise.branch }}</p>
+            <p>State: {{ enterprise.state }}</p>
+            <p>Address: {{ enterprise.address }}</p>
+
+            <a href="{% url 'departments:enterprise-detail' enterprise.pk %}">
+                View Enterprise
+            </a>
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No enterprises found.</p>
+
+{% endif %}
+
+{% endblock content %}
+
+

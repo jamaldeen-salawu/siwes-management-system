@@ -7,6 +7,7 @@ from .forms import (
     StudentSignupForm,
     SupervisorSignupForm,
     StaffSignupForm,
+    DepartmentForm
 )
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
@@ -69,26 +70,99 @@ def SupervisorSignup(request):
     }
     return render(request, 'accounts/supervisor-signup.html', context)
 
-def DepartmentSignup(request):
+
+def DepartmentStaffSignup(request):
     user_form = GenericUserForm()
     staff_form = StaffSignupForm()
     if request.method == 'POST':
         user_form = GenericUserForm(request.POST)
         staff_form = StaffSignupForm(request.POST)
-        if user_form.is_valid() and staff_form.is_valid():
+        if user_form.is_valid()  and staff_form.is_valid():
             user = user_form.save(commit=False)
             user.role = User.Role.STAFF
             staff = staff_form.save(commit=False)
-            staff.user = user
             with transaction.atomic():
                 user.save()
-                staff.save()
+                staff.user = user
+                staff.save
             return redirect('accounts:login')
     context = {
         'user_form': user_form,
         'staff_form': staff_form
     }
-    return render(request, 'accounts/staff-signup.html', context)
+    return render(request, 'accounts/supervisor-signup.html', context)
+
+
+# def DepartmentSignup(request):
+
+#     user_form = GenericUserForm()
+#     staff_form = StaffSignupForm()
+#     department_()
+
+#     if request.method == 'POST':
+
+#         # Creating a department
+#         if 'create_department' in request.POST:
+#             department_(request.POST)
+
+#             if department_form.is_valid():
+#                 department = department_form.save()
+
+#                 user_form = GenericUserForm(request.POST)
+#                 staff_form = StaffSignupForm(request.POST)
+
+#                 if user_form.is_valid() and staff_form.is_valid():
+#                     staff = staff_form.save(commit=False)
+#                     staff.department = department
+
+#                     user = user_form.save(commit=False)
+#                     user.role = User.Role.STAFF
+
+#                     with transaction.atomic():
+#                         user.save()
+#                         staff.user = user
+#                         staff.save()
+
+#                     return redirect('accounts:login')
+
+#         # Normal staff signup
+#         else:
+#             user_form = GenericUserForm(request.POST)
+#             staff_form = StaffSignupForm(request.POST)
+
+#             if user_form.is_valid() and staff_form.is_valid():
+
+#                 if staff_form.cleaned_data['department'] is None:
+#                     return render(
+#                         request,
+#                         'accounts/staff-signup.html',
+#                         {
+#                             'user_form': user_form,
+#                             'staff_form': staff_form,
+#                             'department_form': department_form,
+#                             'show_department_form': True,
+#                         }
+#                     )
+
+#                 staff = staff_form.save(commit=False)
+#                 user = user_form.save(commit=False)
+#                 user.role = User.Role.STAFF
+
+#                 with transaction.atomic():
+#                     user.save()
+#                     staff.user = user
+#                     staff.save()
+
+#                 return redirect('accounts:login')
+
+#     context = {
+#         'user_form': user_form,
+#         'staff_form': staff_form,
+#         'department_form': department_form,
+#         'show_department_form': False,
+#     }
+
+#     return render(request, 'accounts/staff-signup.html', context)
 
 
 class CustomLoginView(LoginView):
@@ -98,3 +172,5 @@ class CustomLoginView(LoginView):
             return reverse('students:profile')
         if user.role == 'SUPERVISOR':
             return reverse('supervision:students')
+        if user.role == "STAFF":
+            return reverse('departments:dashboard')

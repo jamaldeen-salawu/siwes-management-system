@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from students.models import Student
-from supervision.models import Supervisor, DepartmentStaff
+from supervision.models import Supervisor
+from departments.models import Department, DepartmentStaff
 
 User = get_user_model()
 
@@ -37,9 +38,21 @@ class SupervisorSignupForm(forms.ModelForm):
         ]
 
 class StaffSignupForm(forms.ModelForm):
+    department = forms.ModelChoiceField(
+        queryset=Department.objects.all(),
+        required=False
+    )
     class Meta:
         model = DepartmentStaff
         fields = [
             'department',
             'title'
+        ]
+
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = [
+            'name',
+            'code'
         ]

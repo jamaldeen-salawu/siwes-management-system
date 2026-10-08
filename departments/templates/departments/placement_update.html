@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Update Placement</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        Update Placement
+    </button>
+</form>
+
+<a href="{% url 'departments:student-detail' view.kwargs.pk %}">
+    Cancel
+</a>
+
+{% endblock content %}
+

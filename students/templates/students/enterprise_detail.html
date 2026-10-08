@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ enterprise.name }}</h1>
+
+<div>
+    <p><strong>Branch:</strong> {{ enterprise.branch }}</p>
+    <p><strong>State:</strong> {{ enterprise.state }}</p>
+    <p><strong>Address:</strong> {{ enterprise.address }}</p>
+    <p><strong>Department:</strong> {{ enterprise.department }}</p>
+</div>
+
+<hr>
+
+<div>
+    <a href="{% url 'students:enterprise-update' enterprise.pk %}">
+        Update Enterprise
+    </a>
+</div>
+
+
+{% endblock content %}

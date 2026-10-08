@@ -2,6 +2,7 @@ from django import forms
 from .models import Student, Placement
 from django.contrib.auth import get_user_model
 from .constants import DAYS
+from enterprises.models import Enterprise
 
 User = get_user_model()
 
@@ -25,6 +26,12 @@ class StudentUpdateForm(forms.ModelForm):
 
 class PlacementForm(forms.ModelForm):
     on_site_days = forms.MultipleChoiceField(choices=DAYS, widget=forms.CheckboxSelectMultiple)
+    def __init__(self, *args, **kwargs):
+        student = kwargs.pop('student')
+        super().__init__(*args, **kwargs)
+        self.fields['enterprise'].queryset = Enterprise.objects.filter(
+            department=student.department
+        )
     class Meta:
         model = Placement
         fields = [
