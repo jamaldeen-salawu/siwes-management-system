@@ -1,25 +1,56 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
-<div>
-    <h2>Total Students: {{ students }}</h2>
+{% block staff_content %}
+
+<div class="heading">
+    <h1>Staff Dashboard</h1>
+    <p>Overview of your department's SIWES activities.</p>
 </div>
-<div>
-    <h2>Total Supervisors: {{ supervisors }}</h2>
-</div>
-<div>
-    <h2>Total Student Placement: {{ student_placement }}</h2>
-</div>
-<div>
+
+<section class="dashboard-stats">
+
+    <div class="stat-card">
+        <h2>Total Students</h2>
+        <p>{{ students }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>Total Supervisors</h2>
+        <p>{{ supervisors }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>Student Placements</h2>
+        <p>{{ student_placement }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>Students Visited</h2>
+        <p>{{ visited }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>Students Not Visited</h2>
+        <p>{{ not_visited }}</p>
+    </div>
+
+</section>
+
+<section class="card upcoming-visits">
     <h2>Upcoming Visits</h2>
-    <ul>
-        {% for visit in upcoming_visits %}
-        <li></li>{{ visit.student.user.first_name }} {{ visit.student.user.last_name }}</li>
-        {% endfor %}
-    </ul>
-</div>
-<div>
-    <h2>Studensts Visited: {{ visited }}</h2>
-</div>
-<div>Students Not Visited: {{ not_visited }}</div>
-{% endblock content %}
+
+    {% if upcoming_visits %}
+        <ul>
+            {% for visit in upcoming_visits %}
+                <li>
+                    {{ visit.student.user.first_name }}
+                    {{ visit.student.user.last_name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No upcoming visits.</p>
+    {% endif %}
+</section>
+
+{% endblock staff_content %}

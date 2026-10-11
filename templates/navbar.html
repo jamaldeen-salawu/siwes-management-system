@@ -1,20 +1,46 @@
-   <header>
-        <nav>
+
+<header class="site-header">
+    <nav class="navbar">
+        <a href="/" class="brand">SIWES Portal</a>
+
+        <ul class="nav-items">
             {% if request.user.is_authenticated %}
-            <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li>Profile</li>
+
+                {% if request.user.role == "STUDENT" %}
+                    <li>
+                        <a href="#">My Profile</a>
+                    </li>
+
+                {% elif request.user.role == "SUPERVISOR" %}
+                    <li>
+                        <a href="#">My Profile</a>
+                    </li>
+                    <li>
+                        <a href="#">Assigned Students</a>
+                    </li>
+
+                {% elif request.user.role == "STAFF" %}
+                    <li>
+                        <a href="#">My Profile</a>
+                    </li>
+                {% endif %}
+
                 <li>
-                    <form method="post" action="{% url 'accounts:logout' %}">
+                    <form method="post"
+                          action="{% url 'accounts:logout' %}">
                         {% csrf_token %}
                         <button type="submit">Logout</button>
                     </form>
                 </li>
-            </ul>
+
             {% else %}
-            <ul>
-                <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
-                <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                <li>
+                    <a href="{% url 'accounts:signup' %}">Sign up</a>
+                </li>
+                <li>
+                    <a href="{% url 'accounts:login' %}">Login</a>
+                </li>
             {% endif %}
-        </nav>
-    </header>
+        </ul>
+    </nav>
+</header>

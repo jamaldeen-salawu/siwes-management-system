@@ -1,0 +1,55 @@
+<aside class="sidebar">
+    <a href="{% url 'departments:dashboard' %}" class="sidebar-brand">
+        SIWES Portal
+    </a>
+
+    <nav aria-label="Staff navigation">
+        <p class="sidebar-heading">Overview</p>
+        <ul>
+            <li>
+                <a href="{% url 'departments:dashboard' %}">
+                    Dashboard
+                </a>
+            </li>
+        </ul>
+
+        <p class="sidebar-heading">Management</p>
+        <ul>
+            <li>
+                <a href="{% url 'departments:department-view' %}">
+                    Department
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'departments:student-list' %}">
+                    Students
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'departments:supervisor-list' %}">
+                    Supervisors
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'departments:staff-list' %}">
+                    Department Staff
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'departments:enterprise-list' %}">
+                    Enterprises
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'departments:placement-list' %}">
+                    Placements
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'departments:supervision' %}">
+                    Supervision Records
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>

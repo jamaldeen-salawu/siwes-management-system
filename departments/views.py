@@ -11,28 +11,32 @@ from django.db.models import Count
 from students.forms import PlacementForm
 from enterprises.forms import EnterpriseForm
 from enterprises.models import Enterprise
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import DepartmentStaffCheckMixin, StaffRequiredMixin, CreateDepartmentOnceMixin
+from django.contrib.auth.decorators import login_required
+from .decorators import staff_required, department_required
 # Create your views here.
 
 #-----------DASHBOARD-------------
 
-class StaffDashboardView(generic.TemplateView):
-    template_name = 'departments/dashboards.html'
+class StaffDashboardView(DepartmentStaffCheckMixin, generic.TemplateView):
+    template_name = 'departments/dashboard.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         students = Student.objects.filter(department=self.request.user.departmentstaff.department).count()
         supervisors = Supervisor.objects.filter(department=self.request.user.departmentstaff.department).count()
-        student_placement = Student.objects.filter(department=self.request.user.departmentstaff.department, placement_isnull=False).count()
+        student_placement = Student.objects.filter(department=self.request.user.departmentstaff.department, placement__isnull=False).count()
         upcoming_visit = Placement.objects.filter(
             student__department=self.request.user.departmentstaff.department
         ).filter(
             visit_status=Placement.Status.NOT_VISITED
             ).order_by('planned_date')
         visited = Placement.objects.filter(
-            student__supervisor=self.request.user.departmentstaff.department
+            student__department=self.request.user.departmentstaff.department
             ).filter(visit_status=Placement.Status.VISITED).count()
         not_visited = Placement.objects.filter(
-            student__supervisor=self.request.user.departmentstaff.department
+            student__department=self.request.user.departmentstaff.department
             ).filter(visit_status=Placement.Status.NOT_VISITED).count() 
         context.update({
             'students': students,
@@ -46,14 +50,14 @@ class StaffDashboardView(generic.TemplateView):
 
 #---------------DEPARTMENT------------------
         
-class StaffDepartmentView(generic.DetailView):
+class StaffDepartmentView(DepartmentStaffCheckMixin, generic.DetailView):
     model = Department
     template_name = 'departments/department_view.html'
 
     def get_object(self):
         return self.request.user.departmentstaff.department
 
-class DepartmentUpdateView(generic.UpdateView):
+class DepartmentUpdateView(DepartmentStaffCheckMixin, generic.UpdateView):
     model = Department
     form_class = DepartmentForm
     template_name = 'departments/department_update.html'
@@ -64,7 +68,7 @@ class DepartmentUpdateView(generic.UpdateView):
     def get_success_url(self):
         return reverse('departments:department-view')
 
-class DepartmentCreateView(generic.CreateView):
+class DepartmentCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateDepartmentOnceMixin, generic.CreateView):
     model = Department
     form_class = DepartmentForm
     template_name = 'departments/department_create.html'
@@ -73,7 +77,7 @@ class DepartmentCreateView(generic.CreateView):
         return reverse('departments:department-view')
 
 #------------------STUDENT------------------
-class StaffStudentListView(generic.ListView):
+class StaffStudentListView(DepartmentStaffCheckMixin, generic.ListView):
     model = Student
     template_name = 'departments/student_list.html'
     context_object_name = 'students'
@@ -81,13 +85,17 @@ class StaffStudentListView(generic.ListView):
     def get_queryset(self):
         return Student.objects.filter(department=self.request.user.departmentstaff.department)
 
-class StaffStudentDetailView(generic.DetailView):
+class StaffStudentDetailView(DepartmentStaffCheckMixin, generic.DetailView):
     model = Student
     template_name = 'departments/student_detail.html'
     
     def get_queryset(self):
         return Student.objects.filter(department=self.request.user.departmentstaff.department)
 
+
+@login_required
+@staff_required
+@department_required
 def StaffStudentCreateView(request):
     user_form = GenericUserForm()
     student_form = StudentSignupForm()
@@ -110,6 +118,10 @@ def StaffStudentCreateView(request):
     }
     return render(request, 'departments/student_create.html', context)
 
+
+@login_required
+@staff_required
+@department_required
 def StaffStudentUpdateView(request, pk):
     student = get_object_or_404(Student.objects.filter(department=request.user.departmentstaff.department), id=pk)
     user = student.user
@@ -130,7 +142,7 @@ def StaffStudentUpdateView(request, pk):
     }
     return render(request, 'departments/student_update.html', context)
 
-class AssignSupervisor(generic.UpdateView):
+class AssignSupervisor(DepartmentStaffCheckMixin, generic.UpdateView):
     form_class = AssignSupervisorForm
     template_name = 'departments/assign_supervisor.html'
 
@@ -142,7 +154,7 @@ class AssignSupervisor(generic.UpdateView):
 
 #-------------------SUPERVISOR-----------------------------
 
-class StaffSupervisorListView(generic.ListView):
+class StaffSupervisorListView(DepartmentStaffCheckMixin, generic.ListView):
     model = Supervisor
     template_name = 'departments/supervisor_list.html'
     context_object_name = 'supervisors'
@@ -154,7 +166,7 @@ class StaffSupervisorListView(generic.ListView):
             student_count=Count('students')
         )
 
-class StaffSupervisorDetailsView(generic.DetailView):
+class StaffSupervisorDetailsView(DepartmentStaffCheckMixin, generic.DetailView):
     model = Supervisor
     template_name = 'departments/supervisor_detail.html'
 
@@ -170,6 +182,10 @@ class StaffSupervisorDetailsView(generic.DetailView):
         context['students'] = students
         return context
 
+
+@login_required
+@staff_required
+@department_required
 def StaffSupervisorCreateView(request):
     user_form = GenericUserForm()
     supervisor_form = SupervisorSignupForm()
@@ -193,6 +209,9 @@ def StaffSupervisorCreateView(request):
     return render(request, 'departments/supervisor_create.html', context)
 
 
+@login_required
+@staff_required
+@department_required
 def StaffSupervisorUpdateView(request, pk):
     supervisor = get_object_or_404(Supervisor.objects.filter(department=request.user.departmentstaff.department), id=pk)
     user = supervisor.user
@@ -216,7 +235,7 @@ def StaffSupervisorUpdateView(request, pk):
 
 #-------------------------------Staff-----------------------------
 
-class StaffDepartmentStaffListView(generic.ListView):
+class StaffDepartmentStaffListView(DepartmentStaffCheckMixin, generic.ListView):
     model = DepartmentStaff
     template_name = 'departments/staff_list.html'
 
@@ -225,7 +244,7 @@ class StaffDepartmentStaffListView(generic.ListView):
             department=self.request.user.departmentstaff.department
         )
 
-class StaffDepartmentStaffDetailsView(generic.DetailView):
+class StaffDepartmentStaffDetailsView(DepartmentStaffCheckMixin, generic.DetailView):
     model = DepartmentStaff
     template_name = 'departments/staff_detail.html'
 
@@ -234,6 +253,10 @@ class StaffDepartmentStaffDetailsView(generic.DetailView):
             department=self.request.user.departmentstaff.department
         )
 
+
+@login_required
+@staff_required
+@department_required
 def StaffDepartmentStaffCreateView(request):
     user_form = GenericUserForm()
     staff_form = StaffSignupForm()
@@ -257,6 +280,9 @@ def StaffDepartmentStaffCreateView(request):
     return render(request, 'departments/staff_create.html', context)
 
 
+@login_required
+@staff_required
+@department_required
 def StaffDepartmentStaffUpdateView(request, pk):
     staff = get_object_or_404(DepartmentStaff.objects.filter(department=request.user.departmentstaff.department), id=pk)
     user = staff.user
@@ -279,7 +305,7 @@ def StaffDepartmentStaffUpdateView(request, pk):
 
 #---------------PLACEMENT-------------------
 
-class PlacementListView(generic.ListView):
+class PlacementListView(DepartmentStaffCheckMixin, generic.ListView):
     model = Student
     template_name = 'departments/placement_list.html'
 
@@ -294,7 +320,7 @@ class PlacementListView(generic.ListView):
         )
         return context
 
-class StaffStudentPlacementCreateView(generic.CreateView):
+class StaffStudentPlacementCreateView(DepartmentStaffCheckMixin, generic.CreateView):
     form_class = PlacementForm
     template_name = 'departments/placement_create.html'
 
@@ -310,7 +336,7 @@ class StaffStudentPlacementCreateView(generic.CreateView):
     def get_success_url(self):
         return reverse('departments:student-detail', args=(self.kwargs['pk'],))
 
-class StaffStudentPlacementUpdateView(generic.UpdateView):
+class StaffStudentPlacementUpdateView(DepartmentStaffCheckMixin, generic.UpdateView):
     form_class = PlacementForm
     template_name = 'departments/placement_update.html'
 
@@ -327,14 +353,14 @@ class StaffStudentPlacementUpdateView(generic.UpdateView):
 
 #-------------------------ENTERPRISE---------------------------
 
-class StaffEnterpriseListView(generic.ListView):
+class StaffEnterpriseListView(DepartmentStaffCheckMixin, generic.ListView):
     model = Enterprise
     template_name = 'departments/enterprise_list.html'
 
     def get_queryset(self):
         return Enterprise.objects.filter(department=self.request.user.departmentstaff.department)
 
-class StaffEnterpriseCreateView(generic.CreateView):
+class StaffEnterpriseCreateView(DepartmentStaffCheckMixin, generic.CreateView):
     form_class = EnterpriseForm
     template_name = 'departments/enterprise_form.html'
 
@@ -345,7 +371,7 @@ class StaffEnterpriseCreateView(generic.CreateView):
         form.instance.department = self.request.user.departmentstaff.department
         return super().form_valid(form)
  
-class StaffEnterpriseUpdateView(generic.UpdateView):
+class StaffEnterpriseUpdateView(DepartmentStaffCheckMixin, generic.UpdateView):
     form_class = EnterpriseForm
     template_name = 'departments/enterprise_form.html'
 
@@ -356,7 +382,7 @@ class StaffEnterpriseUpdateView(generic.UpdateView):
         return Enterprise.objects.filter(department=self.request.user.departmentstaff.department)
 
 
-class StaffEnterpriseDetailView(generic.DetailView):
+class StaffEnterpriseDetailView(DepartmentStaffCheckMixin, generic.DetailView):
     model = Enterprise
     template_name = 'departments/enterprise_detail.html'
 
@@ -365,7 +391,7 @@ class StaffEnterpriseDetailView(generic.DetailView):
 
 #----------------------SUPERVISION VISITS------------------------
 
-class StaffSupervisionListView(generic.ListView):
+class StaffSupervisionListView(DepartmentStaffCheckMixin, generic.ListView):
     model = Placement
     template_name = 'departments/supervision.html'
     context_object_name = 'upcoming_visits'

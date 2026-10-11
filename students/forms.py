@@ -18,10 +18,7 @@ class StudentUpdateForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = [
-            'matric_no',
             'phone_no',
-            'department',
-            'level'
         ]
 
 class PlacementForm(forms.ModelForm):

@@ -81,16 +81,16 @@ def DepartmentStaffSignup(request):
             user = user_form.save(commit=False)
             user.role = User.Role.STAFF
             staff = staff_form.save(commit=False)
+            staff.user = user
             with transaction.atomic():
                 user.save()
-                staff.user = user
-                staff.save
+                staff.save()
             return redirect('accounts:login')
     context = {
         'user_form': user_form,
         'staff_form': staff_form
     }
-    return render(request, 'accounts/supervisor-signup.html', context)
+    return render(request, 'accounts/staff-signup.html', context)
 
 
 # def DepartmentSignup(request):
@@ -172,5 +172,5 @@ class CustomLoginView(LoginView):
             return reverse('students:profile')
         if user.role == 'SUPERVISOR':
             return reverse('supervision:students')
-        if user.role == "STAFF":
+        if user.role == 'STAFF':
             return reverse('departments:dashboard')

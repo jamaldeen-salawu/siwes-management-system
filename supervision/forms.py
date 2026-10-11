@@ -34,6 +34,5 @@ class SupervisorUpdateForm(forms.ModelForm):
     class Meta:
         model = Supervisor
         fields = [
-            'department',
             'phone_no',
         ]
