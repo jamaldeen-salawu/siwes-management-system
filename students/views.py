@@ -11,14 +11,22 @@ from .forms import (
 from django.db import transaction
 from enterprises.models import Enterprise
 from enterprises.forms import EnterpriseForm
+from .mixins import StudentRequiredMixin
+from django.contrib.auth.decorators import login_required
+from .decorators import student_required
 # Create your views here.
-class StudentProfileView(LoginRequiredMixin, generic.DetailView):
+
+
+class StudentProfileView(StudentRequiredMixin, generic.DetailView):
     model = Student
     template_name = 'students/student_detail.html'
 
     def get_object(self):
         return self.request.user.student
 
+
+@login_required
+@student_required
 def StudentUpdateView(request):
     user = request.user
     student = user.student
@@ -32,7 +40,7 @@ def StudentUpdateView(request):
             with transaction.atomic():
                 user_form.save()
                 student_form.save()
-                return redirect('students:profile')
+            return redirect('students:profile')
     context = {
         'user_form': user_form,
         'student_form': student_form
@@ -40,7 +48,7 @@ def StudentUpdateView(request):
     return render(request, 'students/student_update.html', context)
 
 
-class StudentPlacementCreateView(generic.CreateView):
+class StudentPlacementCreateView(StudentRequiredMixin, generic.CreateView):
     form_class = PlacementForm
     template_name = 'students/placement_form.html'
     def get_success_url(self):
@@ -57,7 +65,7 @@ class StudentPlacementCreateView(generic.CreateView):
         kwargs['student'] = self.request.user.student
         return kwargs
 
-class StudentUpdatePlacementView(generic.UpdateView):
+class StudentUpdatePlacementView(StudentRequiredMixin, generic.UpdateView):
     template_name = 'students/placement_form.html'
     form_class = PlacementForm
 
@@ -67,14 +75,14 @@ class StudentUpdatePlacementView(generic.UpdateView):
     def get_success_url(self):
         return reverse('students:placement')
 
-class StudentAssignedSupervisorView(generic.DetailView):
+class StudentAssignedSupervisorView(StudentRequiredMixin, generic.DetailView):
     model = Student
     template_name = 'students/student_supervisor.html'
 
     def get_object(self):
         return self.request.user.student
 
-class StudentSupervisionVisitView(generic.DetailView):
+class StudentSupervisionVisitView(StudentRequiredMixin, generic.DetailView):
     model = Student
     template_name = 'students/supervision_visit.html'
 
@@ -84,7 +92,7 @@ class StudentSupervisionVisitView(generic.DetailView):
 #-------------------------ENTERPRISE---------------------------
 
 
-class StudentEnterpriseCreateView(generic.CreateView):
+class StudentEnterpriseCreateView(StudentRequiredMixin, generic.CreateView):
     form_class = EnterpriseForm
     template_name = 'students/enterprise_form.html'
 
@@ -95,7 +103,7 @@ class StudentEnterpriseCreateView(generic.CreateView):
         form.instance.department = self.request.user.student.department
         return super().form_valid(form)
  
-class StudentEnterpriseUpdateView(generic.UpdateView):
+class StudentEnterpriseUpdateView(StudentRequiredMixin, generic.UpdateView):
     form_class = EnterpriseForm
     template_name = 'students/enterprise_form.html'
 
@@ -106,7 +114,7 @@ class StudentEnterpriseUpdateView(generic.UpdateView):
         return Enterprise.objects.filter(department=self.request.user.student.department)
 
 
-class StudentEnterpriseDetailView(generic.DetailView):
+class StudentEnterpriseDetailView(StudentRequiredMixin, generic.DetailView):
     model = Enterprise
     template_name = 'students/enterprise_detail.html'
 

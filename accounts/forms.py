@@ -38,10 +38,6 @@ class SupervisorSignupForm(forms.ModelForm):
         ]
 
 class StaffSignupForm(forms.ModelForm):
-    department = forms.ModelChoiceField(
-        queryset=Department.objects.all(),
-        required=False
-    )
     class Meta:
         model = DepartmentStaff
         fields = [

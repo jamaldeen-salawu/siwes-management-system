@@ -2,14 +2,17 @@ from django.shortcuts import render, reverse, redirect
 from django.views import generic
 from students.models import Student, Placement
 from enterprises.models import Enterprise
-from .mixins import SupervisorAuthorizationMixin
+from .mixins import SupervisorAccessMixin
 from .forms import UpdateSupervisionForm, SupervisorUpdateForm, UserUpdateForm
 from .models import Supervisor
 from students.forms import UserUpdateForm
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
+from .decorators import supervisor_required
 # Create your views here.
 
-class SupervisorAssignedStudentsView(generic.ListView):
+
+class SupervisorAssignedStudentsView(SupervisorAccessMixin, generic.ListView):
     """
     List of students assigned to him
     """
@@ -20,14 +23,17 @@ class SupervisorAssignedStudentsView(generic.ListView):
     def get_queryset(self):
         return Student.objects.filter(supervisor=self.request.user.supervisor)
 
-class StudentDetailView(SupervisorAuthorizationMixin, generic.DetailView):
+class StudentDetailView(SupervisorAccessMixin, generic.DetailView):
     """
     Supervisor view of details for students assigned to
     """
     model = Student
     template_name = 'supervision/student_detail.html'
 
-class UpdateSupervisionStatusView(generic.UpdateView):
+    def get_queryset(self):
+        return Student.objects.filter(supervisor=self.request.user.supervisor)
+
+class UpdateSupervisionStatusView(SupervisorAccessMixin, generic.UpdateView):
     """
     Update supervision status for individual students
     """
@@ -41,7 +47,7 @@ class UpdateSupervisionStatusView(generic.UpdateView):
     def get_success_url(self):
         return reverse('supervision:student-detail', kwargs={'pk': self.object.student.id})
 
-class UpcomingVisitView(generic.ListView):
+class UpcomingVisitView(SupervisorAccessMixin, generic.ListView):
     model = Placement
     template_name = 'supervision/upcoming_visits.html'
     context_object_name = 'placements'
@@ -59,20 +65,23 @@ class UpcomingVisitView(generic.ListView):
         context['visited'] = queryset
         return context
 
-class PlacementDetailView(generic.DetailView):
+class PlacementDetailView(SupervisorAccessMixin, generic.DetailView):
     model = Placement
     template_name = 'supervision/placement_detail.html'
 
     def get_queryset(self):
         return Placement.objects.filter(student__supervisor=self.request.user.supervisor)
 
-class SupervisorProfileView(generic.DetailView):
+class SupervisorProfileView(SupervisorAccessMixin, generic.DetailView):
     model = Supervisor
     template_name = 'supervision/supervisor_profile.html'
 
     def get_object(self):
         return self.request.user.supervisor
 
+
+@login_required
+@supervisor_required
 def SupervisorUpdateProfileView(request):
     user = request.user
     supervisor = user.supervisor
@@ -86,14 +95,14 @@ def SupervisorUpdateProfileView(request):
             with transaction.atomic():
                 user_form.save()
                 supervisor_form.save()
-                return redirect('supervision:profile')
+            return redirect('supervision:profile')
     context = {
         'user_form': user_form,
         'supervisor_form': supervisor_form
     }
     return render(request, 'supervision/supervisor_update.html', context)
 
-class SupervisorEnterpriseListView(generic.ListView):
+class SupervisorEnterpriseListView(SupervisorAccessMixin, generic.ListView):
     model = Enterprise
     context_object_name = "enterprises"
     template_name = 'supervision/enterprise_list.html'
@@ -103,7 +112,7 @@ class SupervisorEnterpriseListView(generic.ListView):
             placements__student__supervisor=self.request.user.supervisor
         ).distinct()
 
-class SupervisorEnterpriseDetailView(generic.DetailView):
+class SupervisorEnterpriseDetailView(SupervisorAccessMixin, generic.DetailView):
     model = Enterprise
     template_name = 'supervision/enterprise_detail.html'
 
