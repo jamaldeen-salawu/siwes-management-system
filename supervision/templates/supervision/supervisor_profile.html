@@ -1,14 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'supervision/supervisor_base.html' %}
 
-{% block content %}
-<div>
-    <h2>My Profile</h2>  
-</div>
-<div>
-    <h3>NAME: {{ supervisor.user.first_name }} {{ supervisor.user.last_name }}</h3>
-    <p>EMAIL: {{ supervisor.user.email }}</p>
-    <p>DEPARTMENT: {{ supervisor.department }}</p>
-    <p>PHONE NUMBER: {{ supervisor.phone_no }}</p>
-</div>
-
-{% endblock content %}
+{% block supervision_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>My Profile</h1>
+            <p>Supervisor account and contact details.</p>
+        </div>
+        <a href="{% url 'supervision:update-profile' %}">Update Profile</a>
+    </header>
+    <section class="department-record-card">
+        <h2>{{ supervisor.user.first_name }} {{ supervisor.user.last_name }}</h2>
+        <p><strong>Email:</strong> {{ supervisor.user.email }}</p>
+        <p><strong>Department:</strong> {{ supervisor.department }}</p>
+        <p><strong>Phone:</strong> {{ supervisor.phone_no }}</p>
+    </section>
+</main>
+{% endblock supervision_content %}

@@ -1,9 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">submit</button>
-</form>
-{% endblock content %}
+{% block staff_content %}
+<section class="department-form-page department-form-page-narrow premium-form-page">
+    <header>
+        <h1>{% if object.supervisor %}Reassign{% else %}Assign{% endif %} Supervisor</h1>
+        <p>Choose a supervisor for {{ object.user.get_full_name }}.</p>
+    </header>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="department-form-actions">
+            <button type="submit">Save Supervisor</button>
+            <a class="department-form-cancel" href="{% url 'departments:student-detail' object.pk %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock staff_content %}

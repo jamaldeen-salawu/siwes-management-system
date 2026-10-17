@@ -1,43 +1,33 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
-
-<h1>Enterprises</h1>
-
-<div>
-    <a href="{% url 'departments:enterprise-create' %}">
-        Create Enterprise
-    </a>
-</div>
-
-<hr>
-
-{% if enterprises %}
-
-    {% for enterprise in enterprises %}
-
+{% block staff_content %}
+<main class="department-page">
+    <header class="department-page-heading">
         <div>
-            <h2>{{ enterprise.name }}</h2>
-
-            <p>Branch: {{ enterprise.branch }}</p>
-            <p>State: {{ enterprise.state }}</p>
-            <p>Address: {{ enterprise.address }}</p>
-
-            <a href="{% url 'departments:enterprise-detail' enterprise.pk %}">
-                View Enterprise
-            </a>
+            <h1>Enterprises</h1>
+            <p>Organizations hosting students in this department.</p>
         </div>
+        <a href="{% url 'departments:enterprise-create' %}">Add Enterprise</a>
+    </header>
 
-        <hr>
-
-    {% endfor %}
-
-{% else %}
-
-    <p>No enterprises found.</p>
-
-{% endif %}
-
-{% endblock content %}
+    {% if enterprises %}
+        <section class="department-record-grid" aria-label="Enterprises">
+            {% for enterprise in enterprises %}
+                <article class="department-record-card">
+                    <h2>{{ enterprise.name }}</h2>
+                    <p><strong>Branch:</strong> {{ enterprise.branch }}</p>
+                    <p><strong>State:</strong> {{ enterprise.state }}</p>
+                    <p><strong>Address:</strong> {{ enterprise.address }}</p>
+                    <div class="department-card-actions">
+                        <a href="{% url 'departments:enterprise-detail' enterprise.pk %}">View Enterprise</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <p class="department-page-empty">No enterprises found.</p>
+    {% endif %}
+</main>
+{% endblock staff_content %}
 
 

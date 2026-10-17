@@ -1,15 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
-{% if students %}
-<div>
-    <ul>
-        {% for student in students %} 
-        <div>
-            <li><a href="{% url 'departments:student-detail' student.id %}">{{ student.user.first_name }} {{ student.user.last_name }}</a></li>
-        </div>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-{% endblock content %}
+{% block staff_content %}
+<section class="student-directory">
+    <header class="student-directory-heading">
+        <h1 class="student-heading">Students</h1>
+        <p>Department student records</p>
+    </header>
+
+    {% if students %}
+        <ul class="student-list">
+            {% for student in students %}
+                <li class="student">
+                    <a href="{% url 'departments:student-detail' student.id %}">
+                        {{ student.user.first_name }} {{ student.user.last_name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="student-empty">No students found.</p>
+    {% endif %}
+</section>
+{% endblock staff_content %}

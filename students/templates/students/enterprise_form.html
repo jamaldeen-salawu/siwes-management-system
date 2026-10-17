@@ -1,22 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'students/student_base.html' %}
 
-{% block content %}
+{% block student_content %}
+<main class="student-page student-page-narrow premium-form-page">
+    <header class="premium-form-heading">
+        <p class="premium-form-eyebrow">Enterprise</p>
+        <h1>{% if object %}Update Enterprise{% else %}Add Enterprise{% endif %}</h1>
+    </header>
 
-<h1>Enterprise</h1>
-
-<form method="post">
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">Save Enterprise</button>
-</form>
-
-<div>
-    <a href="{% url 'students:profile' %}">
-        Cancel
-    </a>
-</div>
-
-{% endblock content %}
+    <form class="premium-form-card" method="post">
+        {% csrf_token %}
+        <h2>Enterprise Details</h2>
+        {{ form.as_p }}
+        <div class="student-form-actions">
+            <a class="student-form-cancel" href="{% url 'students:profile' %}">Cancel</a>
+            <button type="submit">Save Enterprise</button>
+        </div>
+    </form>
+</main>
+{% endblock student_content %}
 

@@ -1,22 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
+{% block staff_content %}
+<section class="department-form-page department-form-page-narrow premium-form-page">
+    <header>
+        <h1>{% if object %}Update{% else %}Create{% endif %} Enterprise</h1>
+        <p>Manage the enterprise details for this department.</p>
+    </header>
 
-<h1>Enterprise</h1>
-
-<form method="post">
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">Save Enterprise</button>
-</form>
-
-<div>
-    <a href="{% url 'departments:enterprise-list' %}">
-        Cancel
-    </a>
-</div>
-
-{% endblock content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="department-form-actions">
+            <button type="submit">{% if object %}Save Changes{% else %}Create Enterprise{% endif %}</button>
+            <a class="department-form-cancel" href="{% url 'departments:enterprise-list' %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock staff_content %}
 

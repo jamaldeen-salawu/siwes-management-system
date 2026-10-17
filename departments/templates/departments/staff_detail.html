@@ -1,24 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
+{% block staff_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>Staff Profile</h1>
+            <p>{{ departmentstaff.user.first_name }} {{ departmentstaff.user.last_name }}</p>
+        </div>
+        <a href="{% url 'departments:staff-update' departmentstaff.pk %}">Update Staff</a>
+    </header>
 
-<h1>Staff Detail</h1>
+    <section class="student-detail-block">
+        <h2>Account Details</h2>
+        <p><strong>Email:</strong> {{ departmentstaff.user.email }}</p>
+        <p><strong>Department:</strong> {{ departmentstaff.department }}</p>
+        <p><strong>Title:</strong> {{ departmentstaff.title }}</p>
+    </section>
 
-<h2>
-    {{ departmentstaff.user.first_name }}
-    {{ departmentstaff.user.last_name }}
-</h2>
-
-<p>Email: {{ departmentstaff.user.email }}</p>
-<p>Department: {{ departmentstaff.department }}</p>
-<p>Title: {{ departmentstaff.title }}</p>
-
-<a href="{% url 'departments:staff-update' departmentstaff.pk %}">
-    Update Staff
-</a>
-
-<a href="{% url 'departments:staff-list' %}">
-    Back to Staff
-</a>
-
-{% endblock content %}
+    <div class="department-card-actions">
+        <a href="{% url 'departments:staff-list' %}">Back to Staff</a>
+    </div>
+</main>
+{% endblock staff_content %}

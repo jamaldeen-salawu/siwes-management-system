@@ -1,61 +1,40 @@
-```django
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
+{% block staff_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>Supervisor Profile</h1>
+            <p>{{ supervisor.user.first_name }} {{ supervisor.user.last_name }}</p>
+        </div>
+        <a href="{% url 'departments:supervisor-update' supervisor.pk %}">Update Supervisor</a>
+    </header>
 
-<div>
-    <h1>Supervisor Detail</h1>
+    <section class="student-detail-block">
+        <h2>Profile</h2>
+        <p><strong>Email:</strong> {{ supervisor.user.email }}</p>
+        <p><strong>Phone number:</strong> {{ supervisor.phone_no }}</p>
+        <p><strong>Department:</strong> {{ supervisor.department }}</p>
+    </section>
 
-    <a href="{% url 'departments:supervisor-update' supervisor.pk %}">
-        Update Supervisor
-    </a>
-</div>
-
-
-<!-- Supervisor Profile -->
-<div>
-    <h2>Profile</h2>
-
-    <h3>
-        {{ supervisor.user.first_name }}
-        {{ supervisor.user.last_name }}
-    </h3>
-
-    <p>EMAIL: {{ supervisor.user.email }}</p>
-    <p>PHONE NUMBER: {{ supervisor.phone_no }}</p>
-    <p>DEPARTMENT: {{ supervisor.department }}</p>
-</div>
-
-
-<!-- Assigned Students -->
-<div>
-    <h2>Assigned Students</h2>
-
-    <p>
-        STUDENTS ASSIGNED:
-        {{ supervisor.student_count }}
-    </p>
-
-    {% if students %}
-        {% for student in students %}
-            <div>
-                <h3>
-                    {{ student.user.first_name }}
-                    {{ student.user.last_name }}
-                </h3>
-
-                <p>MATRIC NO: {{ student.matric_no }}</p>
-                <p>PHONE NUMBER: {{ student.phone_no }}</p>
-
-                <a href="{% url 'departments:student-detail' student.pk %}">
-                    View Student
-                </a>
+    <section class="department-page-section">
+        <h2>Assigned Students <span>({{ supervisor.student_count }})</span></h2>
+        {% if students %}
+            <div class="department-record-grid">
+                {% for student in students %}
+                    <article class="department-record-card">
+                        <h3>{{ student.user.first_name }} {{ student.user.last_name }}</h3>
+                        <p><strong>Matric no:</strong> {{ student.matric_no }}</p>
+                        <p><strong>Phone number:</strong> {{ student.phone_no }}</p>
+                        <div class="department-card-actions">
+                            <a href="{% url 'departments:student-detail' student.pk %}">View Student</a>
+                        </div>
+                    </article>
+                {% endfor %}
             </div>
-        {% endfor %}
-    {% else %}
-        <p>No students assigned.</p>
-    {% endif %}
-</div>
-
-{% endblock content %}
-```
+        {% else %}
+            <p class="department-page-empty">No students assigned.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock staff_content %}

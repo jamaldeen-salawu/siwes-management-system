@@ -1,12 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
-<div>
-    <h2>DEPARTMENT</h2>  
-</div>
-<div>
-    <p>NAME: {{ department.name }}</p>
-    <p>CODE: {{ department.code }}</p>
-</div>
+{% block staff_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>Department</h1>
+            <p>Department profile and identification.</p>
+        </div>
+        <a href="{% url 'departments:department-update' %}">Update Department</a>
+    </header>
 
-{% endblock content %}
+    <section class="student-detail-block">
+        <h2>Department Details</h2>
+        <p><strong>Name:</strong> {{ department.name }}</p>
+        <p><strong>Code:</strong> {{ department.code }}</p>
+    </section>
+</main>
+{% endblock staff_content %}

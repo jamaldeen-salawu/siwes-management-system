@@ -1,29 +1,54 @@
-{% extends 'base.html' %}
+{% extends 'students/student_base.html' %}
 
-{% block content %}
-<div>
-    <h2>My Profile</h2>  
-</div>
-<div>
-    <h1>{{ student.user.first_name }} {{ student.user.last_name }}</h1>
-    <p>EMAIL: {{ student.user.email }}</p>
-    <p>DEPARTMENT: {{ student.department }}</p>
-    <p>LEVEL: {{ student.level }}</p>
-    <p>MATRIC NO: {{ student.matric_no }}</p>
-    <p>PHONE NUMBER: {{ student.phone_no }}</p>
-</div>
-<a href="{% url 'students:assigned-supervisor' %}">View Supervisor</a>
+{% block student_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>My Profile</h1>
+            <p>Student information and SIWES placement.</p>
+        </div>
+        <a href="{% url 'students:profile-update' %}">Update Profile</a>
+    </header>
 
-<a href="{% url 'students:placement-update' %}">Update Placement</a>
-<div>
-    <h2>{{ placement.student.first_name }} {{ placement.student.last_name }} Placement</h2>  
-</div>
-<div>
-    <h1>Enterprise: {{ placement.enterprise.name }}</h1>
-    <p>START DATE: {{ placement.start_date }}</p>
-    <p>END DATE: {{ placement.end_date }}</p>
-    <p>STATE: {{ placement.enterprise.state }}</p>
-    <p>ADDRESS: {{ placement.enterprise.address }}</p>
-</div>
+    <div class="department-record-stack">
+        <section class="department-record-card">
+            <h2>{{ student.user.first_name }} {{ student.user.last_name }}</h2>
+            <p><strong>Email:</strong> {{ student.user.email }}</p>
+            <p><strong>Department:</strong> {{ student.department }}</p>
+            <p><strong>Level:</strong> {{ student.level }}</p>
+            <p><strong>Matric no:</strong> {{ student.matric_no }}</p>
+            <p><strong>Phone:</strong> {{ student.phone_no }}</p>
+        </section>
 
-{% endblock content %}
+        <section class="department-record-card">
+            <h2>Supervisor</h2>
+            {% if student.supervisor %}
+                <p><strong>Assigned supervisor:</strong> {{ student.supervisor.user.first_name }} {{ student.supervisor.user.last_name }}</p>
+                <div class="department-card-actions">
+                    <a href="{% url 'students:assigned-supervisor' %}">View Supervisor Details</a>
+                </div>
+            {% else %}
+                <p>No supervisor has been assigned yet.</p>
+            {% endif %}
+        </section>
+
+        <section class="department-record-card">
+            <h2>Placement</h2>
+            {% if student.placement %}
+                <p><strong>Enterprise:</strong> {{ student.placement.enterprise.name }}</p>
+                <p><strong>Session:</strong> {{ student.placement.session }}</p>
+                <p><strong>Dates:</strong> {{ student.placement.start_date }} to {{ student.placement.end_date }}</p>
+                <div class="department-card-actions">
+                    <a href="{% url 'students:placement-update' %}">Update Placement</a>
+                    <a href="{% url 'students:supervision-visit' %}">Visit Details</a>
+                </div>
+            {% else %}
+                <p>No placement has been added yet.</p>
+                <div class="department-card-actions">
+                    <a href="{% url 'students:placement-create' %}">Add Placement</a>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+</main>
+{% endblock student_content %}

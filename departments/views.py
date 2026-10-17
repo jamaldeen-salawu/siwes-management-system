@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse, get_object_or_404
+from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.views import generic
 from .models import DepartmentStaff
 from students.models import Student, Placement
@@ -73,8 +73,15 @@ class DepartmentCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateDepartm
     form_class = DepartmentForm
     template_name = 'departments/department_create.html'
 
-    def get_success_url(self):
-        return reverse('departments:department-view')
+
+    def form_valid(self, form):
+        department = form.instance
+        staff = self.request.user.departmentstaff
+        staff.department = department
+        department.save()
+        staff.save()
+        return redirect('departments:dashboard')
+
 
 #------------------STUDENT------------------
 class StaffStudentListView(DepartmentStaffCheckMixin, generic.ListView):
@@ -138,7 +145,8 @@ def StaffStudentUpdateView(request, pk):
                 return redirect('departments:student-detail', pk=student.id)      
     context = {
         'user_form': user_form,
-        'student_form': student_form
+        'student_form': student_form,
+        'student': student
     }
     return render(request, 'departments/student_update.html', context)
 
@@ -335,6 +343,14 @@ class StaffStudentPlacementCreateView(DepartmentStaffCheckMixin, generic.CreateV
 
     def get_success_url(self):
         return reverse('departments:student-detail', args=(self.kwargs['pk'],))
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['student'] = get_object_or_404(
+            Student.objects.filter(department=self.request.user.departmentstaff.department),
+            id=self.kwargs['pk']
+            )
+        return kwargs
 
 class StaffStudentPlacementUpdateView(DepartmentStaffCheckMixin, generic.UpdateView):
     form_class = PlacementForm

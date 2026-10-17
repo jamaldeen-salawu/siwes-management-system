@@ -1,16 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'supervision/supervisor_base.html' %}
 
-{% block content %}
-<h2>Enterprises</h2>
-{% if enterprises %}
-<div>
-    <ul>
-        {% for enterprise in enterprises %} 
+{% block supervision_content %}
+<main class="department-page">
+    <header class="department-page-heading">
         <div>
-            <li><a href="{% url 'supervision:enterprise-detail' enterprise.id %}">{{ enterprise.name }}</a></li>
+            <h1>Enterprises</h1>
+            <p>Workplaces connected to your assigned students.</p>
         </div>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-{% endblock content %}
+    </header>
+    {% if enterprises %}
+        <div class="department-record-grid">
+            {% for enterprise in enterprises %}
+                <article class="department-record-card">
+                    <h2>{{ enterprise.name }}</h2>
+                    <p><strong>State:</strong> {{ enterprise.state }}</p>
+                    <p><strong>Address:</strong> {{ enterprise.address }}</p>
+                    <div class="department-card-actions">
+                        <a href="{% url 'supervision:enterprise-detail' enterprise.id %}">View Enterprise</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="department-page-empty">No enterprises are connected to your students yet.</p>
+    {% endif %}
+</main>
+{% endblock supervision_content %}

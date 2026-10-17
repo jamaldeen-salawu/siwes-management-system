@@ -52,7 +52,7 @@ class StudentPlacementCreateView(StudentRequiredMixin, generic.CreateView):
     form_class = PlacementForm
     template_name = 'students/placement_form.html'
     def get_success_url(self):
-        return reverse('students:placement')
+        return reverse('students:profile')
 
     def form_valid(self, form):
         placement = form.save(commit=False)
@@ -73,7 +73,7 @@ class StudentUpdatePlacementView(StudentRequiredMixin, generic.UpdateView):
         return self.request.user.student.placement
 
     def get_success_url(self):
-        return reverse('students:placement')
+        return reverse('students:profile')
 
 class StudentAssignedSupervisorView(StudentRequiredMixin, generic.DetailView):
     model = Student

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="staff-layout">
+    {% include 'supervision/includes/supervisor_sidebar.html' %}
+    <div class="staff-workspace">
+        {% block supervision_content %}{% endblock supervision_content %}
+    </div>
+</div>
+{% endblock content %}

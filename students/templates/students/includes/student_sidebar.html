@@ -1,0 +1,18 @@
+<aside class="sidebar">
+    <a href="{% url 'students:profile' %}" class="sidebar-brand">Student Workspace</a>
+    <nav aria-label="Student navigation">
+        <p class="sidebar-heading">Workspace</p>
+        <ul>
+            <li><a href="{% url 'students:profile' %}">My Profile</a></li>
+            <li><a href="{% url 'students:profile-update' %}">Update Profile</a></li>
+            <li><a href="{% url 'students:assigned-supervisor' %}">My Supervisor</a></li>
+            <li><a href="{% url 'students:supervision-visit' %}">Supervision Visit</a></li>
+            {% if request.user.student.placement %}
+                <li><a href="{% url 'students:placement-update' %}">My Placement</a></li>
+            {% else %}
+                <li><a href="{% url 'students:placement-create' %}">Add Placement</a></li>
+            {% endif %}
+            <li><a href="{% url 'students:enterprise-create' %}">Add Enterprise</a></li>
+        </ul>
+    </nav>
+</aside>

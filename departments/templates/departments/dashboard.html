@@ -9,30 +9,30 @@
 
 <section class="dashboard-stats">
 
-    <div class="stat-card">
+    <a class="stat-card" href="{% url 'departments:student-list' %}">
         <h2>Total Students</h2>
         <p>{{ students }}</p>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a class="stat-card" href="{% url 'departments:supervisor-list' %}">
         <h2>Total Supervisors</h2>
         <p>{{ supervisors }}</p>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a class="stat-card" href="{% url 'departments:placement-list' %}">
         <h2>Student Placements</h2>
         <p>{{ student_placement }}</p>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a class="stat-card" href="{% url 'departments:supervision' %}">
         <h2>Students Visited</h2>
         <p>{{ visited }}</p>
-    </div>
+    </a>
 
-    <div class="stat-card">
+    <a class="stat-card" href="{% url 'departments:supervision' %}">
         <h2>Students Not Visited</h2>
         <p>{{ not_visited }}</p>
-    </div>
+    </a>
 
 </section>
 

@@ -1,14 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'supervision/supervisor_base.html' %}
 
-{% block content %}
-<h2>ENTERPRISE: {{ enterprise.name }}</h2>
-{% if placements %}
-<ul>
-{% for placement in placements %}
-<li>{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</li>
-{% endfor %}
-</ul>
-{% else %}
-<h2>No students at this enterprise</h2>
-{% endif %}
-{% endblock content %}
+{% block supervision_content %}
+<main class="department-page">
+	<header class="department-page-heading">
+		<div>
+			<h1>{{ enterprise.name }}</h1>
+			<p>{{ enterprise.address }}{% if enterprise.state %}, {{ enterprise.state }}{% endif %}</p>
+		</div>
+		<a href="{% url 'supervision:enterprise-list' %}">All Enterprises</a>
+	</header>
+	<section class="department-page-section">
+		<h2>Assigned Students</h2>
+		{% if placements %}
+			<div class="department-record-grid">
+				{% for placement in placements %}
+					<article class="department-record-card">
+						<h3>{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</h3>
+						<p><strong>Session:</strong> {{ placement.session }}</p>
+						<div class="department-card-actions">
+							<a href="{% url 'supervision:student-detail' placement.student.id %}">View Student</a>
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="department-page-empty">No assigned students are placed at this enterprise.</p>
+		{% endif %}
+	</section>
+</main>
+{% endblock supervision_content %}

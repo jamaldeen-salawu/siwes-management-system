@@ -1,28 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
+{% block staff_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>{{ enterprise.name }}</h1>
+            <p>Enterprise profile</p>
+        </div>
+        <a href="{% url 'departments:enterprise-update' enterprise.pk %}">Update Enterprise</a>
+    </header>
 
-<h1>{{ enterprise.name }}</h1>
+    <section class="student-detail-block">
+        <h2>Enterprise Details</h2>
+        <p><strong>Branch:</strong> {{ enterprise.branch }}</p>
+        <p><strong>State:</strong> {{ enterprise.state }}</p>
+        <p><strong>Address:</strong> {{ enterprise.address }}</p>
+        <p><strong>Department:</strong> {{ enterprise.department }}</p>
+    </section>
 
-<div>
-    <p><strong>Branch:</strong> {{ enterprise.branch }}</p>
-    <p><strong>State:</strong> {{ enterprise.state }}</p>
-    <p><strong>Address:</strong> {{ enterprise.address }}</p>
-    <p><strong>Department:</strong> {{ enterprise.department }}</p>
-</div>
-
-<hr>
-
-<div>
-    <a href="{% url 'departments:enterprise-update' enterprise.pk %}">
-        Update Enterprise
-    </a>
-</div>
-
-<div>
-    <a href="{% url 'departments:enterprise-list' %}">
-        Back to Enterprises
-    </a>
-</div>
-
-{% endblock content %}
+    <div class="department-card-actions">
+        <a href="{% url 'departments:enterprise-list' %}">Back to Enterprises</a>
+    </div>
+</main>
+{% endblock staff_content %}

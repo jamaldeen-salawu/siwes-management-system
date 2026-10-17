@@ -1,30 +1,52 @@
-{% extends 'base.html' %}
+{% extends 'supervision/supervisor_base.html' %}
 
-{% block content %}
-<div>
-    <div>
+{% block supervision_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>Visit Schedule</h1>
+            <p>Upcoming and completed student visits.</p>
+        </div>
+    </header>
+    <section class="department-page-section">
         <h2>Upcoming Visits</h2>
-    </div>
-    <ul>
-        {% for placement in placements %} 
-        <div>
-            <li><a href="{% url 'supervision:student-detail' placement.id %}">{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</a></li>
-            <p>{{ placement.planned_date }}</p>
-        </div>
-        {% endfor %}
-    </ul>
-</div>
-<div>
-    <div>
-        <h2>Students Visited</h2>
-    </div>
-    <ul>
-        {% for placement in visited %} 
-        <div>
-            <li><a href="{% url 'supervision:student-detail' placement.id %}">{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</a></li>
-            <p>{{ placement.visit_date }}</p>
-        </div>
-        {% endfor %}
-    </ul>
-</div>
-{% endblock content %}
+        {% if placements %}
+            <div class="department-record-grid">
+                {% for placement in placements %}
+                    <article class="department-record-card">
+                        <h3>{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</h3>
+                        <p><strong>Planned date:</strong> {{ placement.planned_date|default:"Not scheduled" }}</p>
+                        <p><strong>Enterprise:</strong> {{ placement.enterprise.name }}</p>
+                        <div class="department-card-actions">
+                            <a href="{% url 'supervision:placement-detail' placement.id %}">View Visit</a>
+                            <a href="{% url 'supervision:student-detail' placement.student.id %}">View Student</a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="department-page-empty">There are no upcoming visits.</p>
+        {% endif %}
+    </section>
+    <section class="department-page-section">
+        <h2>Completed Visits</h2>
+        {% if visited %}
+            <div class="department-record-grid">
+                {% for placement in visited %}
+                    <article class="department-record-card">
+                        <h3>{{ placement.student.user.first_name }} {{ placement.student.user.last_name }}</h3>
+                        <p><strong>Visit date:</strong> {{ placement.visit_date|default:"Not recorded" }}</p>
+                        <p><strong>Enterprise:</strong> {{ placement.enterprise.name }}</p>
+                        <div class="department-card-actions">
+                            <a href="{% url 'supervision:placement-detail' placement.id %}">View Visit</a>
+                            <a href="{% url 'supervision:student-detail' placement.student.id %}">View Student</a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="department-page-empty">No visits have been completed yet.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock supervision_content %}

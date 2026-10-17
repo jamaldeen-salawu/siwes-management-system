@@ -1,14 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
-{% if supervisors %}
-<div>
-    {% for supervisor in supervisors %} 
-    <div>
-        <a href="{% url 'departments:supervisor-detail' supervisor.id %}">{{ supervisor.user.first_name }} {{ supervisor.user.last_name }}</a>
-        <p>Assigned Students: {{ supervisor.student_count }}</p>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-{% endblock content %}
+{% block staff_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>Supervisors</h1>
+            <p>Review supervisor profiles and assigned students.</p>
+        </div>
+        <a href="{% url 'departments:supervisor-create' %}">Add Supervisor</a>
+    </header>
+
+    {% if supervisors %}
+        <section class="department-record-grid" aria-label="Supervisors">
+            {% for supervisor in supervisors %}
+                <article class="department-record-card">
+                    <h2>{{ supervisor.user.first_name }} {{ supervisor.user.last_name }}</h2>
+                    <p><strong>Assigned students:</strong> {{ supervisor.student_count }}</p>
+                    <div class="department-card-actions">
+                        <a href="{% url 'departments:supervisor-detail' supervisor.id %}">View Supervisor</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <p class="department-page-empty">No supervisors found.</p>
+    {% endif %}
+</main>
+{% endblock staff_content %}

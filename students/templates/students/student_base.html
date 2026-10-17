@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="staff-layout">
+    {% include 'students/includes/student_sidebar.html' %}
+    <div class="staff-workspace">
+        {% block student_content %}{% endblock student_content %}
+    </div>
+</div>
+{% endblock content %}

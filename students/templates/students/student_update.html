@@ -1,10 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'students/student_base.html' %}
 
-{% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ student_form.as_p }}
-    <button type="submit">submit</button>
-</form>
-{% endblock content %}
+{% block student_content %}
+<main class="student-page student-page-narrow premium-form-page">
+    <header class="premium-form-heading">
+        <p class="premium-form-eyebrow">My Profile</p>
+        <h1>Update Profile</h1>
+    </header>
+
+    <form class="premium-form-card" method="post">
+        {% csrf_token %}
+        <h2>Account Details</h2>
+        {{ user_form.as_p }}
+        <hr>
+        <h2>Student Details</h2>
+        {{ student_form.as_p }}
+        <div class="student-form-actions">
+            <a class="student-form-cancel" href="{% url 'students:profile' %}">Cancel</a>
+            <button type="submit">Save Changes</button>
+        </div>
+    </form>
+</main>
+{% endblock student_content %}

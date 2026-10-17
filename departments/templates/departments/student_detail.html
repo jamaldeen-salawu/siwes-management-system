@@ -1,86 +1,87 @@
-{% extends 'base.html' %}
+{% extends 'departments/staff_base.html' %}
 
-{% block content %}
+{% block staff_content %}
 
-<div>
-    <h1>Student Detail</h1>
-</div>
+<div class="department-student-detail">
+    <header class="student-detail-heading">
+        <h1>Student Detail</h1>
+    </header>
 
-<!-- Supervisor -->
-<div>
-    <h2>Supervisor</h2>
+    <!-- Supervisor -->
+    <section class="student-detail-block supervisor-block">
+        <h2>Supervisor</h2>
 
-    {% if student.supervisor %}
-        <p>Assigned Supervisor: {{ student.supervisor }}</p>
+        {% if student.supervisor %}
+            <p>Assigned Supervisor: {{ student.supervisor }}</p>
 
-        <a href="{% url 'departments:assign-supervisor' student.pk %}">
-            Reassign Supervisor
+            <a href="{% url 'departments:assign-supervisor' student.pk %}">
+                Reassign Supervisor
+            </a>
+        {% else %}
+            <p>Assigned Supervisor: None</p>
+
+            <a href="{% url 'departments:assign-supervisor' student.pk %}">
+                Assign Supervisor
+            </a>
+        {% endif %}
+    </section>
+
+
+    <!-- Profile -->
+    <section class="student-detail-block profile-block">
+        <h2>Profile</h2>
+
+        <h3>
+            {{ student.user.first_name }}
+            {{ student.user.last_name }}
+        </h3>
+
+        <p>MATRIC NO: {{ student.matric_no }}</p>
+        <p>PHONE NUMBER: {{ student.phone_no }}</p>
+        <p>EMAIL: {{ student.user.email }}</p>
+        <p>DEPARTMENT: {{ student.department }}</p>
+        <p>LEVEL: {{ student.level }}</p>
+
+        <a href="{% url 'departments:student-update' student.pk %}">
+            Update Student
         </a>
-    {% else %}
-        <p>Assigned Supervisor: None</p>
-
-        <a href="{% url 'departments:assign-supervisor' student.pk %}">
-            Assign Supervisor
-        </a>
-    {% endif %}
-</div>
+    </section>
 
 
-<!-- Profile -->
-<div>
-    <h2>Profile</h2>
+    <!-- Placement -->
+    <section class="student-detail-block placement-block">
+        <h2>Placement</h2>
 
-    <h3>
-        {{ student.user.first_name }}
-        {{ student.user.last_name }}
-    </h3>
+        {% if student.placement %}
 
-    <p>MATRIC NO: {{ student.matric_no }}</p>
-    <p>PHONE NUMBER: {{ student.phone_no }}</p>
-    <p>EMAIL: {{ student.user.email }}</p>
-    <p>DEPARTMENT: {{ student.department }}</p>
-    <p>LEVEL: {{ student.level }}</p>
+            <h3>Enterprise: {{ student.placement.enterprise.name }}</h3>
 
-    <a href="{% url 'departments:student-update' student.pk %}">
-        Update Student
-    </a>
-</div>
+            <p>START DATE: {{ student.placement.start_date }}</p>
+            <p>END DATE: {{ student.placement.end_date }}</p>
+            <p>STATE: {{ student.placement.enterprise.state }}</p>
+            <p>ADDRESS: {{ student.placement.enterprise.address }}</p>
+            <p>SESSION: {{ student.placement.session }}</p>
 
+            <div>
+                <a href="{% url 'departments:placement-update' student.id %}">Update Placement</a>
+            </div>
 
-<!-- Placement -->
-<div>
-    <h2>Placement</h2>
+        {% else %}
 
-    {% if student.placement %}
+            <p>No placement assigned.</p>
 
-        <h3>Enterprise: {{ student.placement.enterprise.name }}</h3>
+            <div>
+                <a href="{% url 'departments:placement-create' student.id %}">Create Placement</a>
+            </div>
 
-        <p>START DATE: {{ student.placement.start_date }}</p>
-        <p>END DATE: {{ student.placement.end_date }}</p>
-        <p>STATE: {{ student.placement.enterprise.state }}</p>
-        <p>ADDRESS: {{ student.placement.enterprise.address }}</p>
-        <p>SESSION: {{ student.placement.session }}</p>
+        {% endif %}
+    </section>
 
-        <div>
-            <a href="{% url 'departments:placement-update' student.id %}">Update Placement</a>
-        </div>
+    <!-- Supervision -->
+    <section class="student-detail-block supervision-block">
+        <h2>Supervision</h2>
 
-    {% else %}
-
-        <p>No placement assigned.</p>
-
-        <div>
-            <a href="{% url 'departments:placement-create' student.id %}">Create Placement</a>
-        </div>
-
-    {% endif %}
-</div>
-
-<!-- Supervision -->
-<div>
-    <h2>Supervision</h2>
-
-    {% if student.placement %}
+        {% if student.placement %}
 
         <div>
             <p>Opening Hours</p>
@@ -126,12 +127,13 @@
             </p>
         {% endif %}
 
-    {% else %}
+        {% else %}
 
-        <p>No placement, so no supervision information is available.</p>
+            <p>No placement, so no supervision information is available.</p>
 
-    {% endif %}
+        {% endif %}
+    </section>
 </div>
 
-{% endblock content %}
+{% endblock staff_content %}
 

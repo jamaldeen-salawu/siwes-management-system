@@ -1,15 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'supervision/supervisor_base.html' %}
 
-{% block content %}
-{% if students %}
-<div>
-    <ul>
-        {% for student in students %} 
+{% block supervision_content %}
+<main class="department-page">
+    <header class="department-page-heading">
         <div>
-            <li><a href="{% url 'supervision:student-detail' student.id %}">{{ student.user.first_name }} {{ student.user.last_name }}</a></li>
+            <h1>My Students</h1>
+            <p>Students assigned to your supervision.</p>
         </div>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-{% endblock content %}
+    </header>
+    {% if students %}
+        <div class="department-record-grid">
+            {% for student in students %}
+                <article class="department-record-card">
+                    <h2>{{ student.user.first_name }} {{ student.user.last_name }}</h2>
+                    <p><strong>Department:</strong> {{ student.department }}</p>
+                    <p><strong>Placement:</strong> {{ student.placement.enterprise.name|default:"Not assigned" }}</p>
+                    <div class="department-card-actions">
+                        <a href="{% url 'supervision:student-detail' student.id %}">View Student</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="department-page-empty">No students are assigned to you yet.</p>
+    {% endif %}
+</main>
+{% endblock supervision_content %}

@@ -312,6 +312,14 @@ textarea {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+.stat-card:hover,
+.stat-card:focus-within{
+    transform: translateY(-3px);
+    border-color: var(--color-primary-light);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-md);
 }
 .stat-card h2{
     margin: 0;
@@ -363,13 +371,575 @@ textarea {
    07 — Student pages
    Add Student-specific rules here.
 ================================================== */
+.student-list{
+    display: grid;
+    width: 100%;
+    max-width: 56rem;
+    gap: 0.65rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+.student{
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.student:hover,
+.student:focus-within {
+    transform: translateY(-2px);
+    border-color: var(--color-primary-light);
+    box-shadow: var(--shadow-md);
+}
+.student a {
+    display: flex;
+    min-height: 3.5rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+.placement-student {
+    display: flex;
+    min-height: 3.75rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem 0.5rem 1rem;
+}
+.placement-student-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--color-text);
+    font-weight: 600;
+}
+.student .placement-student-view {
+    flex: 0 0 auto;
+    min-height: 2.4rem;
+    justify-content: center;
+    padding: 0.45rem 0.8rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-size: 0.9rem;
+    transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+.student .placement-student-view:hover {
+    background-color: #0D2F53;
+    box-shadow: var(--shadow-sm);
+}
+.student-directory-heading {
+    display: grid;
+    gap: 0.4rem;
+}
+.student-directory-heading p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+.student-empty {
+    max-width: 56rem;
+    margin: 1.25rem 0 0;
+    padding: 1.25rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+}
+.student-page,
+.department-form-page {
+    display: grid;
+    width: min(100% - 2rem, 60rem);
+    gap: 1.25rem;
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+}
+.student-page-narrow,
+.department-form-page-narrow {
+    width: min(100% - 2rem, 34rem);
+}
+.premium-form-page {
+    display: grid;
+    width: min(100% - 2rem, 32rem);
+    gap: 1rem;
+    margin: 2rem auto 3rem;
+}
+.premium-form-page.student-page-narrow,
+.premium-form-page.department-form-page-narrow {
+    width: min(100% - 2rem, 32rem);
+}
+.student-page h1,
+.department-form-page h1 {
+    color: var(--color-primary);
+}
+.student-page h2,
+.student-page h3 {
+    margin-bottom: 0.75rem;
+}
+.student-page > div {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+.student-page > div p:last-child {
+    margin-bottom: 0;
+}
+.student-page > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: start;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 600;
+    transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+.student-page > a:hover {
+    background-color: #0D2F53;
+    box-shadow: var(--shadow-sm);
+}
+.premium-form-page > header,
+.premium-form-heading {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0 0.15rem 0.2rem;
+}
+.premium-form-eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.premium-form-page > header h1,
+.premium-form-heading h1 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.55rem;
+}
+.premium-form-page > header p:last-child,
+.premium-form-heading p:last-child {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.94rem;
+}
+.premium-form-page > form {
+    display: grid;
+    width: 100%;
+    max-width: 100%;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 1.5rem;
+    border: 1px solid #D3DEE9;
+    border-top: 4px solid var(--color-primary);
+    border-radius: 12px;
+    background-color: var(--color-white);
+    box-shadow: 0 14px 36px rgb(38 52 69 / 10%);
+}
+.premium-form-page > form h2 {
+    margin: 0.2rem 0 1rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid #E8EDF3;
+    color: var(--color-primary);
+    font-size: 0.96rem;
+}
+.premium-form-page > form p {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0 0 0.95rem;
+}
+.premium-form-page > form label {
+    color: var(--color-text);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.premium-form-page > form input:not([type="checkbox"]):not([type="radio"]),
+.premium-form-page > form select,
+.premium-form-page > form textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #C9D4E0;
+    border-radius: 6px;
+    background-color: #F9FBFD;
+    color: var(--color-text);
+    transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+.premium-form-page > form textarea {
+    min-height: 7rem;
+}
+.premium-form-page > form input:not([type="checkbox"]):not([type="radio"]):hover,
+.premium-form-page > form select:hover,
+.premium-form-page > form textarea:hover {
+    border-color: #94A3B8;
+    background-color: var(--color-white);
+}
+.premium-form-page > form input:not([type="checkbox"]):not([type="radio"]):focus,
+.premium-form-page > form select:focus,
+.premium-form-page > form textarea:focus {
+    border-color: var(--color-primary);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgb(18 59 103 / 12%);
+    background-color: var(--color-white);
+}
+.premium-form-page > form input[type="checkbox"],
+.premium-form-page > form input[type="radio"] {
+    width: 1.05rem;
+    min-height: 1.05rem;
+    height: 1.05rem;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+    accent-color: var(--color-primary);
+}
+.premium-form-page > form p > ul:not(.errorlist),
+.premium-form-page > form p > div[id^="id_"] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 0.5rem;
+}
+.premium-form-page > form p > ul:not(.errorlist) li,
+.premium-form-page > form p > div[id^="id_"] > div {
+    min-width: 0;
+    list-style: none;
+}
+.premium-form-page > form p > ul:not(.errorlist) label,
+.premium-form-page > form p > div[id^="id_"] label {
+    display: flex;
+    min-height: 2.65rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: #F9FBFD;
+    font-weight: 500;
+    cursor: pointer;
+}
+.premium-form-page > form p > ul:not(.errorlist) label:has(input:checked),
+.premium-form-page > form p > div[id^="id_"] label:has(input:checked) {
+    border-color: #9CB4CC;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+.premium-form-page > form .helptext {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+.premium-form-page > form .errorlist {
+    margin: 0 0 0.15rem;
+    color: var(--color-danger);
+    font-size: 0.85rem;
+    list-style: none;
+}
+.premium-form-page > form button {
+    min-height: 2.7rem;
+    padding: 0 1rem;
+    border: 0;
+    border-radius: 6px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 600;
+    transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+.premium-form-page > form button:hover {
+    transform: translateY(-1px);
+    background-color: #0D2F53;
+    box-shadow: 0 3px 8px rgb(18 59 103 / 18%);
+}
+.premium-form-actions,
+.student-form-actions,
+.department-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    margin: 0.65rem -1.5rem -1.5rem;
+    padding: 0.9rem 1.5rem;
+    border-top: 1px solid var(--color-border);
+    border-radius: 0 0 9px 9px;
+    background-color: #F7F9FC;
+}
+.premium-form-actions button,
+.student-form-actions button,
+.department-form-actions button {
+    min-width: 8.75rem;
+}
+.premium-form-cancel,
+.student-form-cancel,
+.department-form-cancel {
+    display: inline-flex;
+    min-height: 2.7rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+.premium-form-cancel:hover,
+.student-form-cancel:hover,
+.department-form-cancel:hover {
+    border-color: #AAB7C6;
+    background-color: #F5F8FC;
+    color: var(--color-text);
+}
+.student-page hr,
+.premium-form-page hr {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid var(--color-border);
+}
+.department-page {
+    display: grid;
+    width: min(100% - 2rem, 64rem);
+    gap: 1.25rem;
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+}
+.department-page-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.department-page-heading h1 {
+    color: var(--color-primary);
+    font-size: 1.8rem;
+}
+.department-page-heading p {
+    margin: 0.4rem 0 0;
+    color: var(--color-text-muted);
+}
+.department-page-heading > a,
+.department-card-actions a {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 600;
+    transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+.department-page-heading > a:hover,
+.department-card-actions a:hover {
+    background-color: #0D2F53;
+    box-shadow: var(--shadow-sm);
+}
+.department-page-section {
+    display: grid;
+    gap: 0.85rem;
+}
+.department-page-section > h2 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+.department-record-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: 0.85rem;
+}
+.department-record-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.department-record-card {
+    display: grid;
+    align-content: start;
+    gap: 0.65rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.department-record-card:hover,
+.department-record-card:focus-within {
+    border-color: #B8C9DA;
+    box-shadow: var(--shadow-md);
+}
+.department-record-card h2,
+.department-record-card h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.05rem;
+}
+.department-record-card p {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+.department-record-card strong {
+    color: var(--color-text);
+    font-weight: 600;
+}
+.department-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+}
+.department-card-actions a + a {
+    border-color: var(--color-border);
+    background-color: var(--color-white);
+    color: var(--color-primary);
+}
+.department-card-actions a + a:hover {
+    border-color: #B8C9DA;
+    background-color: var(--color-primary-light);
+    box-shadow: none;
+}
+.department-page-empty {
+    margin: 0;
+    padding: 1.25rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    background-color: rgb(255 255 255 / 60%);
+}
+.department-student-detail {
+    display: grid;
+    width: min(100% - 2rem, 64rem);
+    gap: 1rem;
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+}
+.student-detail-heading h1 {
+    color: var(--color-primary);
+}
+.student-detail-block {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+.student-detail-block h2 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+.student-detail-block h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+}
+.student-detail-block p:last-of-type {
+    margin-bottom: 1rem;
+}
+.student-detail-block a {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 600;
+    transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+.student-detail-block a:hover {
+    background-color: #0D2F53;
+    box-shadow: var(--shadow-sm);
+}
 
+@media (max-width: 768px) {
+    .department-page {
+        width: min(100% - 1.5rem, 64rem);
+        gap: 1rem;
+        padding: 1.25rem 0 2rem;
+    }
 
+    .department-page-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .department-page-heading > a {
+        align-self: flex-start;
+    }
+
+    .department-record-card {
+        padding: 1rem;
+    }
+
+    .department-student-detail {
+        width: min(100% - 1.5rem, 64rem);
+        padding: 1.25rem 0 2rem;
+    }
+
+    .student-detail-block {
+        padding: 1rem;
+    }
+}
 /* ==================================================
    08 — Responsive styles
 ================================================== */
 
 @media (max-width: 768px) {
+    .student-page,
+    .student-page-narrow,
+    .department-form-page,
+    .department-form-page-narrow {
+        width: min(100% - 1.5rem, 60rem);
+        gap: 1rem;
+        padding: 1.25rem 0 2rem;
+    }
+
+    .department-form-page-narrow {
+        width: min(100% - 1.5rem, 34rem);
+    }
+
+    .premium-form-page {
+        width: min(100% - 1.5rem, 32rem);
+        gap: 0.9rem;
+        margin: 1.25rem auto 2rem;
+    }
+
+    .premium-form-page.student-page-narrow,
+    .premium-form-page.department-form-page-narrow {
+        width: min(100% - 1.5rem, 32rem);
+    }
+
+    .student-page > div,
+    .department-form-page > div,
+    .premium-form-page > form {
+        padding: 1rem;
+    }
+
+    .premium-form-actions,
+    .student-form-actions,
+    .department-form-actions {
+        flex-wrap: wrap;
+        margin-right: -1rem;
+        margin-bottom: -1rem;
+        margin-left: -1rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .premium-form-actions button,
+    .student-form-actions button,
+    .department-form-actions button,
+    .premium-form-cancel,
+    .student-form-cancel,
+    .department-form-cancel {
+        flex: 1 1 8rem;
+    }
+
     .staff-layout {
         flex-direction: column;
     }

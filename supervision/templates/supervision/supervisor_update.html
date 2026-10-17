@@ -1,10 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'supervision/supervisor_base.html' %}
 
-{% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ supervisor_form.as_p }}
-    <button type="submit">submit</button>
-</form>
-{% endblock content %}
+{% block supervision_content %}
+<main class="premium-form-page">
+    <header>
+        <p class="premium-form-eyebrow">Supervision</p>
+        <h1>Update supervisor</h1>
+    </header>
+    <form method="post">
+        {% csrf_token %}
+        <h2>Account details</h2>
+        {{ user_form.as_p }}
+        <hr>
+        <h2>Supervisor details</h2>
+        {{ supervisor_form.as_p }}
+        <div class="premium-form-actions">
+            <a class="premium-form-cancel" href="{% url 'supervision:profile' %}">Cancel</a>
+            <button type="submit">Save changes</button>
+        </div>
+    </form>
+</main>
+{% endblock supervision_content %}

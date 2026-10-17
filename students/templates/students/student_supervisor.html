@@ -1,12 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'students/student_base.html' %}
 
-{% block content %}
-<div>
-    <h2>Assigned Supervisor</h2>  
-</div>
-<div>
-    <h1>{{ student.supervisor.user.first_name }} {{ student.supervisor.user.last_name }}</h1>
-    <p>Phone Number: {{ student.supervisor.phone_no }}</p>
-</div>
-
-{% endblock content %}
+{% block student_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>Assigned Supervisor</h1>
+            <p>Contact details for your SIWES supervisor.</p>
+        </div>
+    </header>
+    {% if student.supervisor %}
+        <section class="department-record-card">
+            <h2>{{ student.supervisor.user.first_name }} {{ student.supervisor.user.last_name }}</h2>
+            <p><strong>Email:</strong> {{ student.supervisor.user.email }}</p>
+            <p><strong>Phone:</strong> {{ student.supervisor.phone_no }}</p>
+            <p><strong>Department:</strong> {{ student.supervisor.department }}</p>
+        </section>
+    {% else %}
+        <p class="department-page-empty">A supervisor has not been assigned yet.</p>
+    {% endif %}
+    <div class="department-card-actions">
+        <a href="{% url 'students:profile' %}">Back to Profile</a>
+    </div>
+</main>
+{% endblock student_content %}

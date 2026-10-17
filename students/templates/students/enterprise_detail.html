@@ -1,23 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'students/student_base.html' %}
 
-{% block content %}
-
-<h1>{{ enterprise.name }}</h1>
-
-<div>
-    <p><strong>Branch:</strong> {{ enterprise.branch }}</p>
-    <p><strong>State:</strong> {{ enterprise.state }}</p>
-    <p><strong>Address:</strong> {{ enterprise.address }}</p>
-    <p><strong>Department:</strong> {{ enterprise.department }}</p>
-</div>
-
-<hr>
-
-<div>
-    <a href="{% url 'students:enterprise-update' enterprise.pk %}">
-        Update Enterprise
-    </a>
-</div>
-
-
-{% endblock content %}
+{% block student_content %}
+<main class="department-page">
+    <header class="department-page-heading">
+        <div>
+            <h1>{{ enterprise.name }}</h1>
+            <p>Enterprise details</p>
+        </div>
+        <a href="{% url 'students:enterprise-update' enterprise.pk %}">Update Enterprise</a>
+    </header>
+    <section class="department-record-card">
+        <p><strong>Branch:</strong> {{ enterprise.branch }}</p>
+        <p><strong>State:</strong> {{ enterprise.state }}</p>
+        <p><strong>Address:</strong> {{ enterprise.address }}</p>
+        <p><strong>Department:</strong> {{ enterprise.department }}</p>
+    </section>
+    <div class="department-card-actions">
+        <a href="{% url 'students:profile' %}">Back to Profile</a>
+    </div>
+</main>
+{% endblock student_content %}
