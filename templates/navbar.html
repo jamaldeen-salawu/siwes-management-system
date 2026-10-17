@@ -1,27 +1,37 @@
 
 <header class="site-header">
     <nav class="navbar">
-        <a href="/" class="brand">SIWES Portal</a>
+        {% if request.user.is_authenticated %}
+            {% if request.user.role == "STUDENT" %}
+                <a href="{% url 'students:profile' %}" class="brand">SIWES Portal</a>
+            {% elif request.user.role == "SUPERVISOR" %}
+                <a href="{% url 'supervision:students' %}" class="brand">SIWES Portal</a>
+            {% elif request.user.role == "STAFF" %}
+                <a href="{% url 'departments:dashboard' %}" class="brand">SIWES Portal</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'accounts:login' %}" class="brand">SIWES Portal</a>
+        {% endif %}
 
         <ul class="nav-items">
             {% if request.user.is_authenticated %}
 
                 {% if request.user.role == "STUDENT" %}
                     <li>
-                        <a href="#">My Profile</a>
+                        <a href="{% url 'students:profile' %}">My Profile</a>
                     </li>
 
                 {% elif request.user.role == "SUPERVISOR" %}
                     <li>
-                        <a href="#">My Profile</a>
+                        <a href="{% url 'supervision:profile' %}">My Profile</a>
                     </li>
                     <li>
-                        <a href="#">Assigned Students</a>
+                        <a href="{% url 'supervision:students' %}">Assigned Students</a>
                     </li>
 
                 {% elif request.user.role == "STAFF" %}
                     <li>
-                        <a href="#">My Profile</a>
+                        <a href="{% url 'departments:staff-detail' request.user.departmentstaff.pk %}">My Profile</a>
                     </li>
                 {% endif %}
 
