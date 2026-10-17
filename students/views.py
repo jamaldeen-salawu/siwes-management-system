@@ -75,6 +75,11 @@ class StudentUpdatePlacementView(StudentRequiredMixin, generic.UpdateView):
     def get_success_url(self):
         return reverse('students:profile')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['student'] = self.request.user.student
+        return kwargs
+
 class StudentAssignedSupervisorView(StudentRequiredMixin, generic.DetailView):
     model = Student
     template_name = 'students/student_supervisor.html'

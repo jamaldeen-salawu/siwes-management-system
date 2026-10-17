@@ -158,7 +158,7 @@ class AssignSupervisor(DepartmentStaffCheckMixin, generic.UpdateView):
         return Student.objects.filter(department=self.request.user.departmentstaff.department)
 
     def get_success_url(self):
-        return reverse('departments:student-detail', args=(student.id,))
+        return reverse('departments:student-detail', args=(self.kwargs['pk'],))
 
 #-------------------SUPERVISOR-----------------------------
 
