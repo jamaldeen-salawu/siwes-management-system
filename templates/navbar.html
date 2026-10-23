@@ -3,14 +3,14 @@
     <nav class="navbar">
         {% if request.user.is_authenticated %}
             {% if request.user.role == "STUDENT" %}
-                <a href="{% url 'students:profile' %}" class="brand">SIWES Portal</a>
+                <a href="{% url 'students:profile' %}" class="brand"><span class="brand-mark" aria-hidden="true">S</span><span>SIWES Portal</span></a>
             {% elif request.user.role == "SUPERVISOR" %}
-                <a href="{% url 'supervision:students' %}" class="brand">SIWES Portal</a>
+                <a href="{% url 'supervision:students' %}" class="brand"><span class="brand-mark" aria-hidden="true">S</span><span>SIWES Portal</span></a>
             {% elif request.user.role == "STAFF" %}
-                <a href="{% url 'departments:dashboard' %}" class="brand">SIWES Portal</a>
+                <a href="{% url 'departments:dashboard' %}" class="brand"><span class="brand-mark" aria-hidden="true">S</span><span>SIWES Portal</span></a>
             {% endif %}
         {% else %}
-            <a href="{% url 'accounts:login' %}" class="brand">SIWES Portal</a>
+            <a href="{% url 'accounts:login' %}" class="brand"><span class="brand-mark" aria-hidden="true">S</span><span>SIWES Portal</span></a>
         {% endif %}
 
         <ul class="nav-items">

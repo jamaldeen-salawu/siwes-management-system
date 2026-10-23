@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWES Management System</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="landing-header">
+        <nav class="landing-navbar" aria-label="Main navigation">
+            <a class="landing-brand" href="{% url 'landing' %}" aria-label="SIWES Management System home">
+                <span class="landing-brand-mark">S</span>
+                <span>SIWES <small>Management System</small></span>
+            </a>
+            <div class="landing-nav-links">
+                <a href="#features">Features</a>
+                <a href="#roles">Who it's for</a>
+            </div>
+            <div class="landing-nav-actions">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.role == "STUDENT" %}
+                        <a class="landing-button landing-button-primary" href="{% url 'students:profile' %}">Open portal</a>
+                    {% elif request.user.role == "SUPERVISOR" %}
+                        <a class="landing-button landing-button-primary" href="{% url 'supervision:students' %}">Open portal</a>
+                    {% elif request.user.role == "STAFF" %}
+                        <a class="landing-button landing-button-primary" href="{% url 'departments:dashboard' %}">Open portal</a>
+                    {% endif %}
+                {% else %}
+                    <a class="landing-nav-login" href="{% url 'accounts:login' %}">Log in</a>
+                    <a class="landing-button landing-button-primary" href="{% url 'accounts:signup' %}">Get started</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="landing-hero" aria-labelledby="landing-title">
+            <div class="landing-hero-copy">
+                <h1 id="landing-title">A clearer path through every SIWES placement.</h1>
+                <p class="landing-intro">
+                    Keep students, supervisors, and department teams connected from placement to final evaluation.
+                </p>
+                <div class="landing-hero-actions">
+                    {% if request.user.is_authenticated %}
+                        {% if request.user.role == "STUDENT" %}
+                            <a class="landing-button landing-button-primary" href="{% url 'students:profile' %}">Go to my profile</a>
+                        {% elif request.user.role == "SUPERVISOR" %}
+                            <a class="landing-button landing-button-primary" href="{% url 'supervision:students' %}">View assigned students</a>
+                        {% elif request.user.role == "STAFF" %}
+                            <a class="landing-button landing-button-primary" href="{% url 'departments:dashboard' %}">Open department dashboard</a>
+                        {% endif %}
+                    {% else %}
+                        <a class="landing-button landing-button-primary" href="{% url 'accounts:signup' %}">Create an account</a>
+                    {% endif %}
+                    <a class="landing-button landing-button-secondary" href="#features">Explore the platform</a>
+                </div>
+                <p class="landing-audience">One workspace for students, supervisors, and departments.</p>
+            </div>
+            <figure class="landing-visual">
+                <img src="{% static 'images/landing_photo.png' %}" alt="SIWES department dashboard showing student placements and upcoming supervision visits">
+                <figcaption>Placement and supervision activity, together in one view.</figcaption>
+            </figure>
+        </section>
+
+        <section class="landing-section landing-features" id="features" aria-labelledby="features-title">
+            <div class="landing-section-heading">
+                <p class="landing-eyebrow">A connected process</p>
+                <h2 id="features-title">Less chasing. More visibility.</h2>
+                <p>Bring the moving parts of industrial training into one organized workflow.</p>
+            </div>
+            <div class="landing-feature-grid">
+                <article class="landing-feature">
+                    <span class="landing-feature-number">01</span>
+                    <h3>Track placements</h3>
+                    <p>Keep student placement details and enterprise information organized and easy to find.</p>
+                </article>
+                <article class="landing-feature">
+                    <span class="landing-feature-number">02</span>
+                    <h3>Coordinate supervision</h3>
+                    <p>Give supervisors a clear view of assigned students, visits, and supervision records.</p>
+                </article>
+                <article class="landing-feature">
+                    <span class="landing-feature-number">03</span>
+                    <h3>Support department oversight</h3>
+                    <p>See placement and visit activity across the department from a central workspace.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="landing-section landing-roles" id="roles" aria-labelledby="roles-title">
+            <div class="landing-section-heading">
+                <p class="landing-eyebrow">Designed for the whole team</p>
+                <h2 id="roles-title">Every role, working from the same picture.</h2>
+            </div>
+            <div class="landing-role-list">
+                <article class="landing-role">
+                    <h3>Students</h3>
+                    <p>Keep your placement information and supervision progress close at hand.</p>
+                </article>
+                <article class="landing-role">
+                    <h3>Supervisors</h3>
+                    <p>Stay on top of assigned students, planned visits, and follow-up records.</p>
+                </article>
+                <article class="landing-role">
+                    <h3>Department teams</h3>
+                    <p>Manage department records and monitor placement activity in one place.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <div class="landing-footer-main">
+            <a class="landing-brand landing-footer-brand" href="{% url 'landing' %}">
+                <span class="landing-brand-mark">S</span>
+                <span>SIWES <small>Management System</small></span>
+            </a>
+            <p>Supporting a more connected industrial training experience.</p>
+            <nav class="landing-footer-links" aria-label="Footer navigation">
+                <a href="#features">Features</a>
+                <a href="#roles">Who it's for</a>
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'landing' %}">Home</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}">Log in</a>
+                    <a href="{% url 'accounts:signup' %}">Create account</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div class="landing-footer-bottom">
+            <span>&copy; {% now "Y" %} SIWES Management System</span>
+            <a href="#landing-title">Back to top</a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from accounts.views import LandingView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +24,5 @@ urlpatterns = [
     path('student/', include('students.urls')),
     path('supervision/', include('supervision.urls')),
     path('department/', include('departments.urls')),
+    path('landing_page/', LandingView.as_view(), name='landing')
 ]

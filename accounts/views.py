@@ -174,3 +174,7 @@ class CustomLoginView(LoginView):
             return reverse('supervision:students')
         if user.role == 'STAFF':
             return reverse('departments:dashboard')
+
+class LandingView(generic.TemplateView):
+    template_name = 'landing.html'
+    
