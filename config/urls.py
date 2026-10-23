@@ -24,5 +24,5 @@ urlpatterns = [
     path('student/', include('students.urls')),
     path('supervision/', include('supervision.urls')),
     path('department/', include('departments.urls')),
-    path('landing_page/', LandingView.as_view(), name='landing')
+    path('', LandingView.as_view(), name='landing')
 ]

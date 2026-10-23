@@ -218,3 +218,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Generated static files
+staticfiles/
+
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
